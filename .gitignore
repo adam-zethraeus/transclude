@@ -6,6 +6,7 @@ logs
 node_modules
 bower_components
 .yarn/*
+coverage
 !.yarn/cache
 !.yarn/releases
 !.yarn/plugins
