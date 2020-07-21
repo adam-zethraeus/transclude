@@ -30,7 +30,8 @@
     "react-scripts": "^3.4.1",
     "react-test-renderer": "^16.13.1",
     "redux": "^4.0.0-0",
-    "typescript": "~3.8.2"
+    "typescript": "~3.8.2",
+    "websocket-extensions": "^0.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
