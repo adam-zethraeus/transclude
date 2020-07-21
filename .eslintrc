@@ -1,0 +1,7 @@
+{
+  "extends": [
+    "react-app",
+    "./config/react-redux-typescript-scripts/eslint.js",
+    "./config/react-redux-typescript-scripts/eslint-prettier.js"
+  ],
+}
