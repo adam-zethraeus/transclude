@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { LeafBlockContent, BranchBlockContent, isLeafBlockContent, makeBlockRecordSelector, BlockRecord } from '../block/blocksSlice';
+import { isLeafBlockContent, makeBlockRecordSelector, BlockRecord } from '../block/blocksSlice';
 
 
 type Props = {

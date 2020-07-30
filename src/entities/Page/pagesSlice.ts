@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import { Block } from '../block/Block';
 import { BlockId } from '../block/blocksSlice';
 
 export type PageId = string;
