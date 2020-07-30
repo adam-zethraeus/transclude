@@ -1,17 +1,13 @@
 import { configureStore, getDefaultMiddleware, ThunkAction, Action } from '@reduxjs/toolkit';
 import counterReducer, { CounterState} from '../features/counter/counterSlice';
 import pagesReducer, { Pages } from '../entities/page/pagesSlice';
+import blocksReducer, { Blocks } from '../entities/block/blocksSlice';
 
-export type BlockId = string;
-export type BlockContent = string | BlockId[];
-export type BlockRecord = {
-    id: BlockId,
-    content: BlockContent
-};
+
 
 export type RootState = {
     counter: CounterState,
-    blocks: { allIds: BlockId[], byId: Record<string, BlockRecord> }
+    blocks: Blocks
     pages: Pages
     aliases: {}
 }
@@ -52,14 +48,14 @@ export const store = configureStore({
     reducer: {
         counter: counterReducer,
         pages: pagesReducer,
+        blocks: blocksReducer,
     },
     middleware,
     devTools: process.env.NODE_ENV !== 'production',
     preloadedState,
 });
 
-// You can use this to generate the RootState dynamically, but that requires
-// setting up reducers for all fields to generate the right return type.
+// You can use this to generate the RootState dynamically.
 // export type RootState = ReturnType<typeof store.getState>;
 
 export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, Action<string>>;
