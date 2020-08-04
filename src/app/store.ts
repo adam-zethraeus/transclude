@@ -1,12 +1,10 @@
 import { configureStore, getDefaultMiddleware, ThunkAction, Action } from '@reduxjs/toolkit';
-import counterReducer, { CounterState} from '../features/Counter/counterSlice';
 import pagesReducer, { Pages } from '../entities/Page/pagesSlice';
 import blocksReducer, { Blocks } from '../entities/Block/blocksSlice';
 
 
 
 export type RootState = {
-    counter: CounterState,
     blocks: Blocks
     pages: Pages
     aliases: {}
@@ -46,7 +44,6 @@ const middleware = [...getDefaultMiddleware()];
 
 export const store = configureStore({
     reducer: {
-        counter: counterReducer,
         pages: pagesReducer,
         blocks: blocksReducer,
     },
