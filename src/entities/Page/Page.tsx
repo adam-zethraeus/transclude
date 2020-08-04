@@ -1,5 +1,5 @@
 import React from 'react';
-import { Block } from '../block/Block';
+import { Block } from '../Block/Block';
 import { useSelector } from 'react-redux';
 import { makePageRecordSelector } from './pagesSlice';
 

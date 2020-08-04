@@ -1,6 +1,6 @@
 import React from 'react';
-import { Counter } from './features/counter/Counter';
-import { Page } from './entities/page/Page';
+import { Counter } from './features/Counter/Counter';
+import { Page } from './entities/Page/Page';
 
 function App() {
   return (

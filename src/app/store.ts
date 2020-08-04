@@ -1,7 +1,7 @@
 import { configureStore, getDefaultMiddleware, ThunkAction, Action } from '@reduxjs/toolkit';
-import counterReducer, { CounterState} from '../features/counter/counterSlice';
-import pagesReducer, { Pages } from '../entities/page/pagesSlice';
-import blocksReducer, { Blocks } from '../entities/block/blocksSlice';
+import counterReducer, { CounterState} from '../features/Counter/counterSlice';
+import pagesReducer, { Pages } from '../entities/Page/pagesSlice';
+import blocksReducer, { Blocks } from '../entities/Block/blocksSlice';
 
 
 
