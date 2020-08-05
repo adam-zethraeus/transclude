@@ -8,7 +8,7 @@ type Props = {
 };
 
 export const Page: React.FC<Props> = (props) => {
-    const record = useSelector(makePageRecordSelector(props.id));
+    const record = useSelector(makePageRecordSelector(props.id));// useSelector is the actual thing that gets replaced by connect
     return (
         <>
             <header>

@@ -37,7 +37,7 @@ export const pageSlice = createSlice({
 
 export const { addPage } = pageSlice.actions;
 
-// FIXME: use nested reducers instead here.
+// FIXME: use a connect call instead here.
 export const makePageRecordSelector = (id: PageId) => {
     return (state: RootState) => { 
         return state.pages.byId[id];
