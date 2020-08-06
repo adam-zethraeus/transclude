@@ -1,5 +1,5 @@
 import React from 'react';
-import { Page } from './entities/Page/Page';
+import Page from './entities/Page';
 
 function App() {
   return (

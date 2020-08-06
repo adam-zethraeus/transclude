@@ -1,5 +1,5 @@
 import React from 'react';
-import { Block } from '../Block/Block';
+import Block from '../Block';
 import { connect } from 'react-redux';
 import { PageComponent, PageComponentProps } from './PageComponent';
 import { makeGetPageRecord } from './pagesSlice';
@@ -18,6 +18,6 @@ const mapStateToProps = (state: RootState, ownProps: Props): PageComponentProps 
     };
 };
 
-export const Page = connect(
-    mapStateToProps,
-)(PageComponent);
+const Page = connect(mapStateToProps)(PageComponent);
+
+export default Page;
