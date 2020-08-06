@@ -51,8 +51,8 @@ export const blocksSlice = createSlice({
 
 export const { addBlock } = blocksSlice.actions;
 
-const getBlock = (state: RootState, props: { id: string }) => state.blocks.byId[props.id];
+const getBlockRecord = (state: RootState, props: { id: string }) => state.blocks.byId[props.id];
 
-export const makeGetBlock = () => createSelector(getBlock, x => x)
+export const makeGetBlockRecord = () => createSelector(getBlockRecord, x => x)
 
 export default blocksSlice.reducer;

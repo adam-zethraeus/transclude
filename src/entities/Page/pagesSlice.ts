@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction, nanoid } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, createSelector, nanoid } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 import { BlockId } from '../Block/blocksSlice';
 
@@ -48,11 +48,8 @@ export const pageSlice = createSlice({
 
 export const { addPage } = pageSlice.actions;
 
-// FIXME: use a connect call instead here.
-export const makePageRecordSelector = (id: PageId) => {
-    return (state: RootState) => { 
-        return state.pages.byId[id];
-    };
-}
+const getPageRecord = (state: RootState, props: { id: string }): PageRecord => 
+    state.pages.byId[props.id];
 
+export const makeGetPageRecord = () => createSelector(getPageRecord, x => x)
 export default pageSlice.reducer;
