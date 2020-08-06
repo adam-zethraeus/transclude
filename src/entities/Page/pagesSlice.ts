@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, createSelector, nanoid } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 import { BlockId } from '../Block/blocksSlice';
 
@@ -25,23 +25,31 @@ export const pageSlice = createSlice({
     name: 'pages',
     initialState,
     reducers: {
-        addPage: (state, action: PayloadAction<PageRecord>) => {
-            let newPage = action.payload;
-            if (!state.byId[newPage.id]) {
-                state.byId[newPage.id] = newPage;
-                state.allIds.push(newPage.id);
-            }
-        }
+        addPage: {
+            reducer: (state, action: PayloadAction<PageRecord>) => {
+                let newPage = action.payload;
+                if (!state.byId[newPage.id]) {
+                    state.byId[newPage.id] = newPage;
+                    state.allIds.push(newPage.id);
+                }
+            },
+            prepare: title => {
+                return {
+                    payload: {
+                        id: nanoid(),
+                        title: title,
+                        blockIds: []
+                    } as PageRecord
+                }
+            },
+        },
     },
 });
 
 export const { addPage } = pageSlice.actions;
 
-// FIXME: use nested reducers instead here.
-export const makePageRecordSelector = (id: PageId) => {
-    return (state: RootState) => { 
-        return state.pages.byId[id];
-    };
-}
+const getPageRecord = (state: RootState, props: { id: string }): PageRecord => 
+    state.pages.byId[props.id];
 
+export const makeGetPageRecord = () => createSelector(getPageRecord, x => x)
 export default pageSlice.reducer;

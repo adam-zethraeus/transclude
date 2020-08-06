@@ -1,15 +1,16 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, createSelector, nanoid } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 
 export type BlockId = string;
 export type BlockRecord = {
     id: BlockId
-    content: LeafBlockContent | BranchBlockContent
+    content: BlockContent
 }
+export type BlockContent =  LeafBlockContent | BranchBlockContent;
 export type Blocks = { allIds: BlockId[], byId: Record<string, BlockRecord> };
 export type LeafBlockContent = string
 export type BranchBlockContent = BlockId[]
-export function isLeafBlockContent(content: LeafBlockContent | BranchBlockContent): content is LeafBlockContent {
+export function isLeafBlockContent(content: BlockContent): content is LeafBlockContent {
     return typeof(content) == "string";
 }
 
@@ -28,23 +29,30 @@ export const blocksSlice = createSlice({
     name: 'blocks',
     initialState,
     reducers: {
-        addBlock: (state, action: PayloadAction<BlockRecord>) => {
-            let newBlock = action.payload;
-            if (!state.byId[newBlock.id]) {
-                state.byId[newBlock.id] = newBlock;
-                state.allIds.push(newBlock.id);
-            }
+        addBlock: {
+            reducer: (state, action: PayloadAction<BlockRecord>) => {
+                let newBlock = action.payload;
+                if (!state.byId[newBlock.id]) {
+                    state.byId[newBlock.id] = newBlock;
+                    state.allIds.push(newBlock.id);
+                }
+            },
+            prepare: () => {
+                return {
+                    payload: {
+                        id: nanoid(),
+                        content: ""
+                    } as BlockRecord
+                }
+            },
         }
     },
 });
 
 export const { addBlock } = blocksSlice.actions;
 
-// FIXME: use nested reducers instead here.
-export const makeBlockRecordSelector = (id: BlockId) => {
-    return (state: RootState) => { 
-        return state.blocks.byId[id];
-    };
-}
+const getBlockRecord = (state: RootState, props: { id: string }) => state.blocks.byId[props.id];
+
+export const makeGetBlockRecord = () => createSelector(getBlockRecord, x => x)
 
 export default blocksSlice.reducer;
