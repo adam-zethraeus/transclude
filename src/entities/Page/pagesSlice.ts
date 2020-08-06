@@ -26,7 +26,7 @@ export const pageSlice = createSlice({
     initialState,
     reducers: {
         addPage: {
-            reducer: (state, action: PayloadAction<PageRecord>) => { // < FIXME: a payload action is what's required to do the action, it can contain more than a model.
+            reducer: (state, action: PayloadAction<PageRecord>) => {
                 let newPage = action.payload;
                 if (!state.byId[newPage.id]) {
                     state.byId[newPage.id] = newPage;

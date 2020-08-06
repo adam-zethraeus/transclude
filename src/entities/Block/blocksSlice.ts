@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction, createSelector } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, createSelector, nanoid } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 
 export type BlockId = string;
@@ -29,12 +29,22 @@ export const blocksSlice = createSlice({
     name: 'blocks',
     initialState,
     reducers: {
-        addBlock: (state, action: PayloadAction<BlockRecord>) => {
-            let newBlock = action.payload;
-            if (!state.byId[newBlock.id]) {
-                state.byId[newBlock.id] = newBlock;
-                state.allIds.push(newBlock.id);
-            }
+        addBlock: {
+            reducer: (state, action: PayloadAction<BlockRecord>) => {
+                let newBlock = action.payload;
+                if (!state.byId[newBlock.id]) {
+                    state.byId[newBlock.id] = newBlock;
+                    state.allIds.push(newBlock.id);
+                }
+            },
+            prepare: () => {
+                return {
+                    payload: {
+                        id: nanoid(),
+                        content: ""
+                    } as BlockRecord
+                }
+            },
         }
     },
 });
@@ -43,8 +53,6 @@ export const { addBlock } = blocksSlice.actions;
 
 const getBlock = (state: RootState, props: { id: string }) => state.blocks.byId[props.id];
 
-export const makeGetBlock = () => {
-    return createSelector(getBlock, x => x);
-};
+export const makeGetBlock = () => createSelector(getBlock, x => x)
 
 export default blocksSlice.reducer;
