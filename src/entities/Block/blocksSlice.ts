@@ -1,15 +1,16 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, createSelector } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 
 export type BlockId = string;
 export type BlockRecord = {
     id: BlockId
-    content: LeafBlockContent | BranchBlockContent
+    content: BlockContent
 }
+export type BlockContent =  LeafBlockContent | BranchBlockContent;
 export type Blocks = { allIds: BlockId[], byId: Record<string, BlockRecord> };
 export type LeafBlockContent = string
 export type BranchBlockContent = BlockId[]
-export function isLeafBlockContent(content: LeafBlockContent | BranchBlockContent): content is LeafBlockContent {
+export function isLeafBlockContent(content: BlockContent): content is LeafBlockContent {
     return typeof(content) == "string";
 }
 
@@ -40,11 +41,10 @@ export const blocksSlice = createSlice({
 
 export const { addBlock } = blocksSlice.actions;
 
-// FIXME: use nested reducers instead here.
-export const makeBlockRecordSelector = (id: BlockId) => {
-    return (state: RootState) => { 
-        return state.blocks.byId[id];
-    };
-}
+const getBlock = (state: RootState, props: { id: string }) => state.blocks.byId[props.id];
+
+export const makeGetBlock = () => {
+    return createSelector(getBlock, x => x);
+};
 
 export default blocksSlice.reducer;
