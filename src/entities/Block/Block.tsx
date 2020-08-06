@@ -17,9 +17,7 @@ function blockContent(blockRecord: BlockRecord) {
 }
 
 export const Block: React.FC<Props> = (props) => {
-    console.log(props.id);
     let blockRecord: BlockRecord = useSelector(makeBlockRecordSelector(props.id))
-    console.log(blockRecord);
     return (
         <div className='block'>
             { blockContent(blockRecord) }

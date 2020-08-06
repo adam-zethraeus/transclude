@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, nanoid } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 import { BlockId } from '../Block/blocksSlice';
 
@@ -25,13 +25,24 @@ export const pageSlice = createSlice({
     name: 'pages',
     initialState,
     reducers: {
-        addPage: (state, action: PayloadAction<PageRecord>) => {
-            let newPage = action.payload;
-            if (!state.byId[newPage.id]) {
-                state.byId[newPage.id] = newPage;
-                state.allIds.push(newPage.id);
-            }
-        }
+        addPage: {
+            reducer: (state, action: PayloadAction<PageRecord>) => { // < FIXME: a payload action is what's required to do the action, it can contain more than a model.
+                let newPage = action.payload;
+                if (!state.byId[newPage.id]) {
+                    state.byId[newPage.id] = newPage;
+                    state.allIds.push(newPage.id);
+                }
+            },
+            prepare: title => {
+                return {
+                    payload: {
+                        id: nanoid(),
+                        title: title,
+                        blockIds: []
+                    } as PageRecord
+                }
+            },
+        },
     },
 });
 
