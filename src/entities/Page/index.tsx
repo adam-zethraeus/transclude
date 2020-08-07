@@ -7,6 +7,7 @@ import { RootState } from  '../../app/store';
 
 type Props = {
     id: string;
+    drillDownBlockId?: string;
 }
 
 const mapStateToProps = (state: RootState, ownProps: Props): PageComponentProps => {

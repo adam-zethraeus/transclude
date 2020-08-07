@@ -3,9 +3,9 @@ import Page from '../Page';
 import { useParams } from "react-router-dom";
 
 const PageDisplay: React.FC<{}> = () => {
-    const { pageId } = useParams();
+    const { pageId, drillDownBlockId } = useParams();
     return (
-        <Page id={pageId} />
+        <Page id={pageId} drillDownBlockId={drillDownBlockId} />
     );
 };
 

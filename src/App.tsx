@@ -11,7 +11,7 @@ function App() {
                 <Route exact path="/">
                     <p>Select something</p>
                 </Route>
-                <Route path="/page/:pageId">
+                <Route path="/page/:pageId/:drillDownBlockId?">
                     <PageDisplay />
                 </Route>
                 <Redirect to="/" />
