@@ -34,8 +34,7 @@ const mapStateToProps = (state: RootState, ownProps: Props): PageComponentProps 
                 blocks: [<p>Block: {ownProps.drillDownBlockId} not found on Page: ownProps.id</p>]
             };
         }
-    }
-
+    };
 };
 
 const Page = connect(mapStateToProps)(PageComponent);
