@@ -14,6 +14,29 @@ export function isLeafBlockContent(content: BlockContent): content is LeafBlockC
     return typeof(content) == "string";
 }
 
+export function searchBlockRecords(state: RootState, from: BlockId, filter: (record: BlockRecord) => boolean, path: BlockId[] = []): BlockId | null {
+    let blockRecord = state.blocks.byId[from];
+    if (filter(blockRecord)) {
+        return from;
+    }
+    if (path.includes(from)) {
+        return null;
+    }
+    if (isLeafBlockContent(blockRecord.content)) {
+        return null;
+    }
+    let newPath = path.concat([from]);
+    for (let id of blockRecord.content) {
+        let child = state.blocks.byId[id];
+        if (child !== null) {
+            let foundRecord = searchBlockRecords(state, child.id, filter, newPath);
+            if (foundRecord !== null) {
+                return foundRecord;
+            }
+        }
+    } 
+    return null;
+} 
 
 const initialState: Blocks = {
     byId: {

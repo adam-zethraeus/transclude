@@ -48,8 +48,8 @@ export const pageSlice = createSlice({
 
 export const { addPage } = pageSlice.actions;
 
-const getPageRecord = (state: RootState, props: { id: string }): PageRecord => 
-    state.pages.byId[props.id];
+const getPageRecord = (state: RootState, id: string): PageRecord => 
+    state.pages.byId[id];
 
 export const makeGetPageRecord = () => createSelector(getPageRecord, x => x)
 export default pageSlice.reducer;
