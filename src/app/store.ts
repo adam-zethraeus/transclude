@@ -1,6 +1,8 @@
-import { configureStore, getDefaultMiddleware, ThunkAction, Action } from '@reduxjs/toolkit';
+import { configureStore, getDefaultMiddleware, ThunkAction, Action, combineReducers } from '@reduxjs/toolkit';
 import pagesReducer, { Pages } from '../entities/Page/pagesSlice';
 import blocksReducer, { Blocks } from '../entities/Block/blocksSlice';
+import { connectRouter } from 'connected-react-router'
+import { createBrowserHistory, History } from 'history'
 
 
 
@@ -9,6 +11,8 @@ export type RootState = {
     pages: Pages
     aliases: {}
 }
+
+export const history = createBrowserHistory()
 
 const preloadedState = {
     blocks: {
@@ -39,11 +43,14 @@ const preloadedState = {
 
 const middleware = [...getDefaultMiddleware()];
 
+const createRootReducer = (history: History) => combineReducers({
+    router: connectRouter(history),
+    pages: pagesReducer,
+    blocks: blocksReducer,
+});
+
 export const store = configureStore({
-    reducer: {
-        pages: pagesReducer,
-        blocks: blocksReducer,
-    },
+    reducer: createRootReducer(history),
     middleware,
     devTools: process.env.NODE_ENV !== 'production',
     preloadedState,
