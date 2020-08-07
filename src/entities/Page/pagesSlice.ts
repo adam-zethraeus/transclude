@@ -11,14 +11,8 @@ export type PageRecord = {
 export type Pages = { allIds: PageId[], byId: Record<string, PageRecord> };
 
 const initialState: Pages = {
-    byId: {
-        "?": {
-            id: "?",
-            title: "unknown",
-            blockIds: []
-        }
-    },
-    allIds: ["?"]
+    byId: {},
+    allIds: []
 }
 
 export const pageSlice = createSlice({

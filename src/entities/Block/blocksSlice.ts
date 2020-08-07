@@ -39,13 +39,8 @@ export function searchBlockRecords(state: RootState, from: BlockId, filter: (rec
 } 
 
 const initialState: Blocks = {
-    byId: {
-        "?": {
-            id: "?",
-            content: "empty"
-        }
-    },
-    allIds: ["?"]
+    byId: {},
+    allIds: []
 }
 
 export const blocksSlice = createSlice({

@@ -3,18 +3,22 @@ import PageDisplay from './entities/PageDisplay';
 import { Redirect, Route, Switch } from 'react-router-dom'
 import { ConnectedRouter } from 'connected-react-router'
 import { history } from './app/store';
+import Serialize from './entities/Serialize';
 
 function App() {
     return (
         <ConnectedRouter history={history}>
             <Switch>
-                <Route exact path="/">
+                <Route exact path='/'>
                     <p>Select something</p>
                 </Route>
-                <Route path="/page/:pageId/:drillDownBlockId?">
+                <Route path='/page/:pageId/:drillDownBlockId?'>
                     <PageDisplay />
                 </Route>
-                <Redirect to="/" />
+                <Route path='/serialize'>
+                    <Serialize />
+                </Route>
+                <Redirect to='/' />
             </Switch>
         </ConnectedRouter>
     );
