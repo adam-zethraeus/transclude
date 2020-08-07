@@ -17,7 +17,7 @@ const mapStateToProps = (state: RootState, ownProps: Props): PageComponentProps 
     if (ownProps.drillDownBlockId === undefined) {
         return {
             title: pageRecord.title,
-            blocks: pageRecord.blockIds.map(id => <Block id={id} />)
+            blocks: pageRecord.blockIds.map(id => <Block id={id} key={id} />)
         };
     } else {
         let treeContainsDrillDownBlock = pageRecord.blockIds
@@ -26,7 +26,7 @@ const mapStateToProps = (state: RootState, ownProps: Props): PageComponentProps 
         if (treeContainsDrillDownBlock) {
             return {
                 title: pageRecord.title,
-                blocks: [<Block id={ownProps.drillDownBlockId} />]
+                blocks: [<Block id={ownProps.drillDownBlockId} key={ownProps.drillDownBlockId} />]
             };
         } else {
             return {

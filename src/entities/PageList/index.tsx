@@ -9,7 +9,7 @@ const PageList: React.FC<{}> = () => {
     let store = useSelector(getStore);
     return (
         <ul>
-            { store.pages.allIds.map((pageId) => <li><Link to={`/page/${pageId}`}>{pageId}</Link></li> ) }
+            { store.pages.allIds.map((pageId) => <li key={pageId}><Link to={`/page/${pageId}`}>{pageId}</Link></li> ) }
         </ul>
     );
 };

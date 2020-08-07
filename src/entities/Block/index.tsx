@@ -13,7 +13,7 @@ const mapStateToProps = (state: RootState, ownProps: Props): BlockComponentProps
     let content: BlockContent = getBlockRecord(state, ownProps).content;
     let contentComponent = (isLeafBlockContent(content) 
         ? content 
-        : content.map(id => <Block id={id} />)
+        : content.map(id => <Block id={id} key={id} />)
     );
     return {
         content: contentComponent
