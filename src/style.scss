@@ -34,9 +34,9 @@ body {
                 }
             }
             div.block-cycle {
-                margin: 0 0.5rem;
-                color: $red;
                 float: right;
+                color: $red;
+                font-size: $font-size-sm;
             }
         }
 

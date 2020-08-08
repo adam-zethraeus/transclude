@@ -23,10 +23,10 @@ export const BlockComponent: React.FC<BlockComponentProps> = (props) => {
         { props.cycle &&
             <OverlayTrigger
                 placement="bottom"
-                overlay={<Tooltip id={`tooltip-top`}>{ `Block ${props.id} references itself` }</Tooltip>
+                overlay={<Tooltip id={`tooltip-top`}>{ `Circular block reference: ${props.id}` }</Tooltip>
             }>
                 {({ ref, ...triggerHandler }) => (
-                    <div ref={ref} {...triggerHandler} className="block-cycle">↺</div>
+                    <div ref={ref} {...triggerHandler} className="block-cycle">↳ ∞</div>
                 )}
             </OverlayTrigger>
         }

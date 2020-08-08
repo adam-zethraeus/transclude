@@ -33,7 +33,7 @@ const preloadedState = {
             },
             "bId4": {
                 id: "bId4",
-                content: "block four.",
+                content: "block four. block four. block four. block four. block four. block four. block four. block four. block four. block four. block four. block four. block four. block four. block four. block four. block four. block four. block four. block four. block four. block four. block four. block four. block four. block four. block four. block four.",
                 subBlockIds: ["bId1"]
             },
         },
