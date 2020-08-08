@@ -1,5 +1,6 @@
 // Override default variables before the import
 $body-bg: #F3F3F3;
+$font-family-base: "Georgia", "Times New Roman", Times, serif;
 // Import Bootstrap and its default variables
 @import '~bootstrap/scss/bootstrap.scss';
 
@@ -20,9 +21,25 @@ body {
             border-bottom: 0;
         }
 
-        div.block {
-            margin-left: 1em;
+        main > div.block:first-child {
+            border-top: 0px;
         }
+
+        main {
+            div.block {
+                border-top: 1px dashed #ddd;
+
+                div.block {
+                    margin-left: 1em;
+                }
+            }
+            div.block-cycle {
+                margin: 0 0.5rem;
+                color: $red;
+                float: right;
+            }
+        }
+
     }
 }
 

@@ -18,14 +18,26 @@ const preloadedState = {
         byId: {
             "bId1": {
                 id: "bId1",
-                content: ["bId2"],
+                content: "block one.",
+                subBlockIds: ["bId2", "bId3"]
             },
             "bId2": {
                 id: "bId2",
-                content: "This is some text.",
+                content: "block two.",
+                subBlockIds: []
+            },
+            "bId3": {
+                id: "bId3",
+                content: "block three.",
+                subBlockIds: ["bId4"]
+            },
+            "bId4": {
+                id: "bId4",
+                content: "block four.",
+                subBlockIds: ["bId1"]
             },
         },
-        allIds: ["id1"],
+        allIds: ["bId1", "bId2", "bId3", "bId4"],
     },
     pages: {
         byId: {

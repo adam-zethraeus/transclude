@@ -5,14 +5,11 @@ export type BlockId = string;
 export type BlockRecord = {
     id: BlockId
     content: BlockContent
+    subBlockIds: BlockId[]
 }
-export type BlockContent =  LeafBlockContent | BranchBlockContent;
+export type BlockContent = string;
 export type Blocks = { allIds: BlockId[], byId: Record<string, BlockRecord> };
-export type LeafBlockContent = string
-export type BranchBlockContent = BlockId[]
-export function isLeafBlockContent(content: BlockContent): content is LeafBlockContent {
-    return typeof(content) == "string";
-}
+
 
 export function searchBlockRecords(state: RootState, from: BlockId, filter: (record: BlockRecord) => boolean, path: BlockId[] = []): BlockId | null {
     let blockRecord = state.blocks.byId[from];
@@ -22,14 +19,10 @@ export function searchBlockRecords(state: RootState, from: BlockId, filter: (rec
     if (path.includes(from)) {
         return null;
     }
-    if (isLeafBlockContent(blockRecord.content)) {
-        return null;
-    }
     let newPath = path.concat([from]);
-    for (let id of blockRecord.content) {
-        let child = state.blocks.byId[id];
-        if (child !== null) {
-            let foundRecord = searchBlockRecords(state, child.id, filter, newPath);
+    for (let id of blockRecord.subBlockIds) {
+        if (state.blocks.byId[id] !== null) {
+            let foundRecord = searchBlockRecords(state, id, filter, newPath);
             if (foundRecord !== null) {
                 return foundRecord;
             }
