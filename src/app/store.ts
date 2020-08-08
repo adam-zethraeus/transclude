@@ -13,17 +13,34 @@ export type RootState = {
     aliases: {}
 }
 
+// TODO: consider the bar required for view state to be stored here.
+
 /*
 TODO: If we're modeling this explicitly like this it should probably replace connected-react-router.
-type ViewEditMode {
+enum Mode {
+    Browse,
+    Serialize,
+    ListPages,
+    AddPage
+}
+type BrowseView {
+    mode: Mode.Browse
     pageId: PageId
     drillDownBlockId?: BlockId
     focusBlockId?: BlockId
 }
-type SerializeMode {}
-type ListPagesMode {}
+type SerializeView {
+    mode: Mode.Serialize
+}
+type ListPagesView {
+    mode: Mode.ListPages
+}
+
+type AddPageView {
+    mode: Mode.AddPage
+}
 export type ViewState = {
-    mode: ViewEditMode | SerializeMode | ListPagesMode
+    mode: BrowseView | SerializeView | ListPagesView | AddPageView
 }
 */
 
