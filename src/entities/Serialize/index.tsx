@@ -20,9 +20,7 @@ const SerializeStore: React.FC<{}> = () => {
     return (
         <pre>
             <code>
-            <Form.Control as="textarea" rows={20}>
-                { JSON.stringify(storeWithoutRoute, null, 2) }
-            </Form.Control>
+                <Form.Control as="textarea" rows={20} value={JSON.stringify(storeWithoutRoute, null, 2) } readOnly />
             </code>
         </pre>
     );

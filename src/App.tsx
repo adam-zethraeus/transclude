@@ -18,7 +18,7 @@ function App() {
             <Container>
                 <Row xs={12} id="header">
                     <Col xs={3}>
-                        <img src="/T.png" alt="" width="100%"/>
+                        <img src="/T.png" alt="" id="T" />
                     </Col>
                     <Col>
                     </Col>
@@ -30,6 +30,7 @@ function App() {
                         </ButtonGroup>
                     </Col>
                 </Row>
+                <Row><Col><hr /></Col></Row>
                 <Row>
                     <Col>
                         <Switch>

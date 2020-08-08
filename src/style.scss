@@ -5,10 +5,24 @@ $body-bg: #F3F3F3;
 
 body {
     #root {
-        margin-top: 1em;
-    }
-    #header {
-        margin-bottom: 1em;
+        margin-top: 1.5em;
+
+        #header {
+            margin-bottom: 1em;
+
+            img#T {
+                width: 100px;
+            }
+        }
+
+        hr {
+            border-top: 3px double #8d8d8d;
+            border-bottom: 0;
+        }
+
+        div.block {
+            margin-left: 1em;
+        }
     }
 }
 
