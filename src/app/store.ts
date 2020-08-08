@@ -6,11 +6,26 @@ import { createBrowserHistory, History } from 'history';
 import state from './state';
 
 
+// TODO: Group all current non-router RootState into a data field.
 export type RootState = {
     blocks: Blocks
     pages: Pages
     aliases: {}
 }
+
+/*
+TODO: If we're modeling this explicitly like this it should probably replace connected-react-router.
+type ViewEditMode {
+    pageId: PageId
+    drillDownBlockId?: BlockId
+    focusBlockId?: BlockId
+}
+type SerializeMode {}
+type ListPagesMode {}
+export type ViewState = {
+    mode: ViewEditMode | SerializeMode | ListPagesMode
+}
+*/
 
 export const history = createBrowserHistory()
 
