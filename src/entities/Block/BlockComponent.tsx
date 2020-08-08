@@ -1,6 +1,8 @@
 import React from 'react';
 import { BlockContent, BlockId } from './blocksSlice';
 import Block from './';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 
 export type BlockComponentProps = {
     id: BlockId;
@@ -19,7 +21,14 @@ export const BlockComponent: React.FC<BlockComponentProps> = (props) => {
             </div>
         }
         { props.cycle &&
-            <div className="block-cycle">↺</div>
+            <OverlayTrigger
+                placement="bottom"
+                overlay={<Tooltip id={`tooltip-top`}>{ `Block ${props.id} references itself` }</Tooltip>
+            }>
+                {({ ref, ...triggerHandler }) => (
+                    <div ref={ref} {...triggerHandler} className="block-cycle">↺</div>
+                )}
+            </OverlayTrigger>
         }
     </>
 };
