@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
+import Form from 'react-bootstrap/Form';
 
 const getStore = (state: RootState) => state;
 
@@ -19,7 +20,9 @@ const SerializeStore: React.FC<{}> = () => {
     return (
         <pre>
             <code>
+            <Form.Control as="textarea" rows={20}>
                 { JSON.stringify(storeWithoutRoute, null, 2) }
+            </Form.Control>
             </code>
         </pre>
     );
