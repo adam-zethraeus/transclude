@@ -1,12 +1,13 @@
 import React from 'react';
 import { BlockContent, BlockId } from './blocksSlice';
+import { PageId } from '../Page/pagesSlice';
 import Block from './';
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
-import Tooltip from 'react-bootstrap/Tooltip';
 import ReactMarkdown from 'react-markdown';
+import CircularReferenceBlockIndicator from '../../ui/CircularReferenceBlockIndicator';
 
 export type BlockComponentProps = {
     id: BlockId;
+    pageId: PageId;
     content: BlockContent;
     path: BlockId[];
     subBlockIds: BlockId[];
@@ -18,18 +19,11 @@ export const BlockComponent: React.FC<BlockComponentProps> = (props) => {
         { !props.cycle &&
             <div className="block">
                 <ReactMarkdown source={props.content} />
-                { props.subBlockIds && props.subBlockIds.map((id) => <Block id={id} key={id} path={props.path.concat(props.id)} />) }
+                { props.subBlockIds && props.subBlockIds.map((id) => <Block id={id} pageId={props.pageId} key={id} path={props.path.concat(props.id)} />) }
             </div>
         }
         { props.cycle &&
-            <OverlayTrigger
-                placement="bottom"
-                overlay={<Tooltip id={`tooltip-top`}>{ `Circular block reference: ${props.id}` }</Tooltip>
-            }>
-                {({ ref, ...triggerHandler }) => (
-                    <div ref={ref} {...triggerHandler} className="block-cycle">↳ ∞</div>
-                )}
-            </OverlayTrigger>
+            <CircularReferenceBlockIndicator id={props.id} pageId={props.pageId} />
         }
     </>
 };

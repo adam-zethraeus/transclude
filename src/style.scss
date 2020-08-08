@@ -34,9 +34,11 @@ body {
                 }
             }
             div.block-cycle {
-                float: right;
-                color: $red;
+                text-align: right;
                 font-size: $font-size-sm;
+                a {
+                    color: $red;
+                }
             }
         }
 

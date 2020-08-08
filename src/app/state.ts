@@ -18,8 +18,8 @@ export default {
             },
             "bId4": {
                 id: "bId4",
-                content: "## block four.\nblock four. `block four`. **block four**. _block four_. \n\n1. block four.\n2. block four. \n 3. block four.\n\n > block four. \n\n * block four. \n* block four. \n\nblock four. \n```block four.\nblock\nfour. block four.\n``` \n\nblock four.\n\n| Do I | Support |\n| --------- | ------- |\n| tables    | ✔ |",
-                subBlockIds: ["bId1"]
+                content: "## block four.\n[block four](/page/pId1/bId4). `block four`. **block four**. _block four_. \n\n1. block four.\n2. block four. \n 3. block four.\n\n > block four. \n\n * block four. \n* block four. \n\nblock four. \n```block four.\nblock\nfour. block four.\n``` \n\nblock four.\n\n| Do I | Support |\n| --------- | ------- |\n| tables    | ✔ |",
+                subBlockIds: ["bId1", "bId2"]
             },
         },
         allIds: ["bId1", "bId2", "bId3", "bId4"],
