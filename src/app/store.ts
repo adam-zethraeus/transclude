@@ -28,12 +28,12 @@ const preloadedState = {
             },
             "bId3": {
                 id: "bId3",
-                content: "block three.",
+                content: "[block three](/page/pId1/bId3).",
                 subBlockIds: ["bId4"]
             },
             "bId4": {
                 id: "bId4",
-                content: "block four. block four. block four. block four. block four. block four. block four. block four. block four. block four. block four. block four. block four. block four. block four. block four. block four. block four. block four. block four. block four. block four. block four. block four. block four. block four. block four. block four.",
+                content: "## block four.\nblock four. `block four`. **block four**. _block four_. \n\n1. block four.\n2. block four. \n 3. block four.\n\n > block four. \n\n * block four. \n* block four. \n\nblock four. \n```block four.\nblock\nfour. block four.\n``` \n\nblock four.\n\n| Do I | Support |\n| --------- | ------- |\n| tables    | ✔ |",
                 subBlockIds: ["bId1"]
             },
         },
