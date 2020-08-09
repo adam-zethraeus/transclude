@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction, createSelector, nanoid } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
+import { assert } from '../../utils'
 
 export type BlockId = string;
 export type BlockRecord = {
@@ -11,21 +12,21 @@ export type BlockContent = string;
 export type Blocks = { allIds: BlockId[], byId: Record<string, BlockRecord> };
 
 
-export function searchBlockRecords(state: RootState, from: BlockId, filter: (record: BlockRecord) => boolean, path: BlockId[] = []): BlockId | null {
-    let blockRecord = state.blocks.byId[from];
-    if (filter(blockRecord)) {
-        return from;
-    }
-    if (path.includes(from)) {
+export function findPathToBlock(state: RootState, curr: BlockId, to: BlockId, path: BlockId[] = []): BlockId[] | null {
+    if (path.includes(curr)) {
         return null;
     }
-    let newPath = path.concat([from]);
-    for (let id of blockRecord.subBlockIds) {
-        if (state.blocks.byId[id] !== null) {
-            let foundRecord = searchBlockRecords(state, id, filter, newPath);
-            if (foundRecord !== null) {
-                return foundRecord;
-            }
+    let currPath = path.concat([curr]);
+    if (curr === to) {
+        return currPath;
+    }
+    let currRecord = state.blocks.byId[curr];
+    assert(!!currRecord, `Invalid block: ${curr} linked via: ${path}`)
+
+    for (let id of currRecord.subBlockIds) {
+        let nextPath = findPathToBlock(state, id, to, currPath);
+        if (nextPath !== null) {
+            return nextPath;
         }
     } 
     return null;

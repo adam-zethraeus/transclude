@@ -1,8 +1,10 @@
 import React from 'react';
+import { BlockId } from '../Block/blocksSlice';
 
 export type PageComponentProps = {
     title: string;
     blocks: JSX.Element[];
+    blockPath?: BlockId[];
 };
 
 export const PageComponent: React.FC<PageComponentProps> = (props) => {

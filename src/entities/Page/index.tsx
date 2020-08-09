@@ -4,36 +4,44 @@ import { connect } from 'react-redux';
 import { PageComponent, PageComponentProps } from './PageComponent';
 import { makeGetPageRecord } from './pagesSlice';
 import { RootState } from  '../../app/store';
-import { searchBlockRecords } from '../Block/blocksSlice';
+import { findPathToBlock } from '../Block/blocksSlice';
 
 type Props = {
     id: string;
     drillDownBlockId?: string;
 }
 
+function isDefined<Type>(variable: Type | undefined): variable is Type {
+    return variable !== undefined;
+}
+
 const mapStateToProps = (state: RootState, ownProps: Props): PageComponentProps => {
     let getPageRecord = makeGetPageRecord();
     let pageRecord = getPageRecord(state, ownProps.id);
-    if (ownProps.drillDownBlockId === undefined) {
-        return {
-            title: pageRecord.title,
-            blocks: pageRecord.blockIds.map(id => <Block id={id} pageId={ownProps.id} key={id} path={[]} />)
-        };
-    } else {
-        let treeContainsDrillDownBlock = pageRecord.blockIds
-            .map(id => !!searchBlockRecords(state, id, (pr) => pr.id === ownProps.drillDownBlockId))
-            .reduce((acc, curr) => acc || curr);
-        if (treeContainsDrillDownBlock) {
+    if (isDefined(ownProps.drillDownBlockId)) {
+        let drillDownBlockId: string = ownProps.drillDownBlockId;
+        let blockPath = pageRecord.blockIds
+            .map(id => findPathToBlock(state, id, drillDownBlockId))
+            .filter(path => path != null)
+            .pop()
+
+        if (!!blockPath) {
             return {
                 title: pageRecord.title,
-                blocks: [<Block id={ownProps.drillDownBlockId} pageId={ownProps.id} key={ownProps.drillDownBlockId} path={[]} />]
+                blockPath: blockPath,
+                blocks: [<Block id={drillDownBlockId} pageId={ownProps.id} key={drillDownBlockId} path={[]} />]
             };
         } else {
             return {
                 title: pageRecord.title,
-                blocks: [<p>Block: {ownProps.drillDownBlockId} not found on Page: ownProps.id</p>]
+                blocks: [<p>Block: {drillDownBlockId} not found on Page: ownProps.id</p>] // TODO: factor to 404 block
             };
         }
+    }
+
+    return {
+        title: pageRecord.title,
+        blocks: pageRecord.blockIds.map(id => <Block id={id} pageId={ownProps.id} key={id} path={[]} />)
     };
 };
 
