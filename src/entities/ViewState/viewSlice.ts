@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction, createSelector } from '@reduxjs/toolkit';
 import { BlockId } from '../Block/blocksSlice';
-import moment from 'moment';
 import { RootState } from  '../../app/store';
 
 // TODO: If we're modeling this explicitly like this it should probably replace connected-react-router.
@@ -16,22 +15,22 @@ export type BrowseView = {
     // pageId: PageId
     // drillDownBlockId?: BlockId
     focusBlockId?: BlockId
-    time: string
+    time: number
 };
 
 export type SerializeView = {
     mode: Mode.Serialize
-    time: string
+    time: number
 };
 
 export type ListPagesView = {
     mode: Mode.ListPages
-    time: string
+    time: number
 };
 
 export type AddPageView = {
     mode: Mode.AddPage
-    time: string
+    time: number
 };
 
 export function getViewState(state: RootState): ViewState {
@@ -59,7 +58,7 @@ export type ViewState = BrowseView | SerializeView | ListPagesView | AddPageView
 const initialState: BrowseView = {
     mode: Mode.Browse,
     focusBlockId: undefined,
-    time: moment().toISOString() // TODO: find a good way to serialize the direct type
+    time: Date.now() // TODO: find a good way to serialize the direct type
 };
 
 export const viewSlice = createSlice({
@@ -78,7 +77,7 @@ export const viewSlice = createSlice({
                     payload: {
                         mode: Mode.Browse,
                         focusBlockId: blockId,
-                        time: moment().toISOString()
+                        time: Date.now()
                     }
                 }
             },
@@ -92,7 +91,7 @@ export const viewSlice = createSlice({
                     payload: {
                         mode: Mode.Browse,
                         focusBlockId: undefined,
-                        time: moment().toISOString()
+                        time: Date.now()
                     }
                 }
             },

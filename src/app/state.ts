@@ -36,7 +36,7 @@ export default {
     },
     view:  {
         mode: "BROWSE",
-        time: ""
+        time: 1597007917373
     },
     aliases: {}
 }
