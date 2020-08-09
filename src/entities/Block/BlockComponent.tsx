@@ -11,18 +11,20 @@ export type BlockComponentProps = {
     content: BlockContent;
     path: BlockId[];
     subBlockIds: BlockId[];
-    cycle: boolean;
+    isCycleRepresentation: boolean;
+    isSelected: boolean;
 }
 
 export const BlockComponent: React.FC<BlockComponentProps> = (props) => {
     return <>
-        { !props.cycle &&
-            <div className="block">
-                <ReactMarkdown source={props.content} />
+        { !props.isCycleRepresentation &&
+            <div className="block" onClick={(event) => alert(1)} >
+                { !props.isSelected && <ReactMarkdown source={props.content} /> }
+                { props.isSelected && <textarea>{props.content}</textarea> }
                 { props.subBlockIds && props.subBlockIds.map((id) => <Block id={id} pageId={props.pageId} key={id} path={props.path.concat(props.id)} />) }
             </div>
         }
-        { props.cycle &&
+        { props.isCycleRepresentation &&
             <CircularReferenceBlockIndicator id={props.id} pageId={props.pageId} />
         }
     </>

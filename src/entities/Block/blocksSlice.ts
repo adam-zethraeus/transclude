@@ -63,7 +63,7 @@ export const blocksSlice = createSlice({
 
 export const { addBlock } = blocksSlice.actions;
 
-const getBlockRecord = (state: RootState, props: { id: string }) => state.blocks.byId[props.id];
+const getBlockRecord = (state: RootState, id: string) => state.blocks.byId[id];
 
 export const makeGetBlockRecord = () => createSelector(getBlockRecord, x => x)
 

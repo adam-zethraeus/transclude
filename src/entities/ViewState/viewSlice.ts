@@ -50,7 +50,7 @@ export function isAddPageView(state: ViewState): state is AddPageView {
     return state.mode === Mode.AddPage;
 }
 
-export const getState = () => createSelector((getViewState), x => x)
+export const isBlockSelected = createSelector((state: RootState, blockId: BlockId): boolean => (isBrowseView(state.view) && state.view.focusBlockId === blockId), x => x)
 
 export type ViewState = BrowseView | SerializeView | ListPagesView | AddPageView;
 
@@ -58,7 +58,7 @@ export type ViewState = BrowseView | SerializeView | ListPagesView | AddPageView
 const initialState: BrowseView = {
     mode: Mode.Browse,
     focusBlockId: undefined,
-    time: Date.now() // TODO: find a good way to serialize the direct type
+    time: Date.now()
 };
 
 export const viewSlice = createSlice({
