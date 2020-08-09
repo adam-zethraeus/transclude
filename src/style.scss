@@ -17,10 +17,17 @@ body {
         }
 
         hr {
-            border-top: 3px double #8d8d8d;
+            border-top: 3px double $gray-600;
             border-bottom: 0;
         }
-
+        header {
+            .breadcrumb {
+                    font-size: 0.8rem;
+                    margin: 0;
+                    padding: 0.2rem 0.8rem;
+                    background-color: #ebebeb;
+            }
+        }
         main > div.block:first-child {
             border-top: 0px;
         }
