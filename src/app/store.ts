@@ -1,6 +1,7 @@
 import { configureStore, getDefaultMiddleware, ThunkAction, Action, combineReducers } from '@reduxjs/toolkit';
 import pagesReducer, { Pages } from '../entities/Page/pagesSlice';
 import blocksReducer, { Blocks } from '../entities/Block/blocksSlice';
+import viewReducer from '../entities/ViewState/viewSlice';
 import { connectRouter, routerMiddleware } from 'connected-react-router';
 import { createBrowserHistory, History } from 'history';
 import state from './state';
@@ -11,38 +12,7 @@ export type RootState = {
     blocks: Blocks
     pages: Pages
     aliases: {}
-}
-
-// TODO: consider the bar required for view state to be stored here.
-
-/*
-TODO: If we're modeling this explicitly like this it should probably replace connected-react-router.
-enum Mode {
-    Browse,
-    Serialize,
-    ListPages,
-    AddPage
-}
-type BrowseView {
-    mode: Mode.Browse
-    pageId: PageId
-    drillDownBlockId?: BlockId
-    focusBlockId?: BlockId
-}
-type SerializeView {
-    mode: Mode.Serialize
-}
-type ListPagesView {
-    mode: Mode.ListPages
-}
-
-type AddPageView {
-    mode: Mode.AddPage
-}
-export type ViewState = {
-    mode: BrowseView | SerializeView | ListPagesView | AddPageView
-}
-*/
+};
 
 export const history = createBrowserHistory()
 
@@ -54,6 +24,7 @@ const createRootReducer = (history: History) => combineReducers({
     router: connectRouter(history),
     pages: pagesReducer,
     blocks: blocksReducer,
+    view: viewReducer,
 });
 
 export const store = configureStore({
