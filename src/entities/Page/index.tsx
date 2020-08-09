@@ -1,5 +1,3 @@
-import React from 'react';
-import Block from '../Block';
 import { connect } from 'react-redux';
 import { PageComponent, PageComponentProps } from './PageComponent';
 import { makeGetPageRecord } from './pagesSlice';
@@ -27,21 +25,24 @@ const mapStateToProps = (state: RootState, ownProps: Props): PageComponentProps 
 
         if (!!blockPath) {
             return {
+                id: ownProps.id,
                 title: pageRecord.title,
                 blockPath: blockPath,
-                blocks: [<Block id={drillDownBlockId} pageId={ownProps.id} key={drillDownBlockId} path={[]} />]
+                blockIds: [drillDownBlockId]
             };
         } else {
             return {
+                id: ownProps.id,
                 title: pageRecord.title,
-                blocks: [<p>Block: {drillDownBlockId} not found on Page: ownProps.id</p>] // TODO: factor to 404 block
+                blockIds: [] // TODO: factor to 404 block
             };
         }
     }
 
     return {
+        id: ownProps.id,
         title: pageRecord.title,
-        blocks: pageRecord.blockIds.map(id => <Block id={id} pageId={ownProps.id} key={id} path={[]} />)
+        blockIds: pageRecord.blockIds
     };
 };
 
