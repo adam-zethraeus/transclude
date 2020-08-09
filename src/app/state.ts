@@ -34,5 +34,9 @@ export default {
         },
         allIds: ["pId1"],
     },
+    view:  {
+        mode: "BROWSE",
+        time: ""
+    },
     aliases: {}
 }

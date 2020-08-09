@@ -1,7 +1,7 @@
 import { configureStore, getDefaultMiddleware, ThunkAction, Action, combineReducers } from '@reduxjs/toolkit';
 import pagesReducer, { Pages } from '../entities/Page/pagesSlice';
 import blocksReducer, { Blocks } from '../entities/Block/blocksSlice';
-import viewReducer from '../entities/ViewState/viewSlice';
+import viewReducer, { ViewState } from '../entities/ViewState/viewSlice';
 import { connectRouter, routerMiddleware } from 'connected-react-router';
 import { createBrowserHistory, History } from 'history';
 import state from './state';
@@ -11,6 +11,7 @@ import state from './state';
 export type RootState = {
     blocks: Blocks
     pages: Pages
+    view: ViewState
     aliases: {}
 };
 
