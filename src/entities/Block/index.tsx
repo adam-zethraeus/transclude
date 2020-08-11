@@ -1,8 +1,9 @@
-import { BlockComponent, BlockComponentProps } from './BlockComponent';
+import { BlockComponent, BlockStateProps, BlockDispatchProps } from './BlockComponent';
 import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
 import { BlockId, makeGetBlockRecord } from './blocksSlice';
 import { PageId } from '../Page/pagesSlice';
-import { isBlockSelected } from '../ViewState/viewSlice';
+import { isBlockSelected, setFocusBlock } from '../ViewState/viewSlice';
 import { RootState } from  '../../app/store';
 
 type Props = {
@@ -11,7 +12,7 @@ type Props = {
     path: BlockId[];
 }
 
-const mapStateToProps = (state: RootState, ownProps: Props): BlockComponentProps => {
+const mapStateToProps = (state: RootState, ownProps: Props): BlockStateProps => {
     let getBlockRecord = makeGetBlockRecord();
     let record = getBlockRecord(state, ownProps.id);
     let cycle = ownProps.path.includes(record.id);
@@ -23,10 +24,14 @@ const mapStateToProps = (state: RootState, ownProps: Props): BlockComponentProps
         path: ownProps.path,
         subBlockIds: record.subBlockIds,
         isCycleRepresentation: cycle,
-        isSelected: isSelected
+        isSelected: isSelected,
     };
 };
 
-const Block = connect(mapStateToProps)(BlockComponent);
+const mapDispatchToProps = (dispatch: Dispatch, ownProps: Props): BlockDispatchProps => ({
+    setSelected: () => { alert(ownProps.id); dispatch(setFocusBlock(ownProps.id)) }
+})
 
-export default Block;
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+export default connector(BlockComponent);
