@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { MouseEvent } from 'react';
 import PageDisplay from './entities/PageDisplay';
 import { Redirect, Route, Switch } from 'react-router-dom'
 import { ConnectedRouter } from 'connected-react-router'
-import { history } from './app/store';
+import { history, store } from './app/store';
 import Serialize from './entities/Serialize';
 import PageList from './entities/PageList';
 import Container from 'react-bootstrap/Container';
@@ -10,12 +10,13 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import LinkButton from './ui/LinkButton';
+import { setFocusBlock } from './entities/ViewState/viewSlice';
 
 
 function App() {
     return (
         <ConnectedRouter history={history}>
-            <Container>
+            <Container onClick={ (event: MouseEvent) => { store.dispatch(setFocusBlock(undefined)); } }>
                 <Row xs={12} id="header">
                     <Col xs={3}>
                         <img src="/T.png" alt="" id="T" />
