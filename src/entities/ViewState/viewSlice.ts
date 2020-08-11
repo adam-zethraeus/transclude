@@ -5,33 +5,25 @@ import { RootState } from  '../../app/store';
 // TODO: If we're modeling this explicitly like this it should probably replace connected-react-router.
 export enum Mode {
     Browse = "BROWSE",
-    Serialize = "SERIALIZE",
-    ListPages = "LIST_PAGES",
-    AddPage = "ADD_PAGE"
+    Serialize = "SERIALIZE"
 }
 
-export type BrowseView = {
-    mode: Mode // TODO: make Mode
-    // pageId: PageId
-    // drillDownBlockId?: BlockId
+type ViewMode = {
+    mode: Mode
+}
+
+export type BrowseView = ViewMode & {
+    mode: Mode.Browse
     focusBlockId?: BlockId
     time: number
 };
 
-export type SerializeView = {
+export type SerializeView = ViewMode & {
     mode: Mode.Serialize
     time: number
 };
 
-export type ListPagesView = {
-    mode: Mode.ListPages
-    time: number
-};
-
-export type AddPageView = {
-    mode: Mode.AddPage
-    time: number
-};
+export type ViewState = ViewMode & (BrowseView | SerializeView);
 
 export function getViewState(state: RootState): ViewState {
     return state.view
@@ -40,39 +32,56 @@ export function getViewState(state: RootState): ViewState {
 export function isBrowseView(state: ViewState): state is BrowseView {
     return state.mode === Mode.Browse;
 }
-export function isSerializeView(state: ViewState): state is BrowseView {
+
+export function isSerializeView(state: ViewState): state is SerializeView {
     return state.mode === Mode.Serialize;
 }
-export function isListPagesView(state: ViewState): state is ListPagesView {
-    return state.mode === Mode.ListPages;
-}
-export function isAddPageView(state: ViewState): state is AddPageView {
-    return state.mode === Mode.AddPage;
-}
 
-export const isBlockSelected = createSelector((state: RootState, blockId: BlockId): boolean => (isBrowseView(state.view) && state.view.focusBlockId === blockId), x => x)
-
-export type ViewState = BrowseView | SerializeView | ListPagesView | AddPageView;
+export const isBlockSelected = createSelector((state: RootState, blockId: BlockId): boolean => (
+    isBrowseView(state.view) && state.view.focusBlockId === blockId), x => x);
 
 
-const initialState: BrowseView = {
+const initialState = {
     mode: Mode.Browse,
     focusBlockId: undefined,
     time: Date.now()
-};
+} as ViewState;
 
 export const viewSlice = createSlice({
     name: 'view',
     initialState,
     reducers: {
-        setViewState: (state: ViewState, action: PayloadAction<ViewState>) => {
-            state = action.payload
+        setViewMode: {
+            reducer: (state: ViewState, action: PayloadAction<ViewState>) => {
+                return action.payload
+            },
+            prepare: (mode: Mode) => {
+                switch (mode) {
+                case Mode.Browse:
+                    return {
+                        payload: {
+                            mode: Mode.Browse,
+                            focusBlockId: undefined,
+                            time: Date.now()
+                        }
+                    }
+                case Mode.Serialize:
+                    return {
+                        payload: {
+                            mode: Mode.Serialize,
+                            time: Date.now()
+                        }
+                    }
+                }
+            },
         },
         setFocusBlock: {
             reducer: (state: ViewState, action: PayloadAction<ViewState>) => {
-                state = action.payload
+                if (state.mode === Mode.Browse) {
+                    return action.payload
+                }
             },
-            prepare: blockId => {
+            prepare: (blockId: BlockId | undefined) => {
                 return {
                     payload: {
                         mode: Mode.Browse,
@@ -82,23 +91,9 @@ export const viewSlice = createSlice({
                 }
             },
         },
-        unfocus: {
-            reducer: (state: ViewState, action: PayloadAction<ViewState>) => {
-                state = action.payload
-            },
-            prepare: blockId => {
-                return {
-                    payload: {
-                        mode: Mode.Browse,
-                        focusBlockId: undefined,
-                        time: Date.now()
-                    }
-                }
-            },
-        } 
     },
 });
 
-export const { setViewState, setFocusBlock, unfocus } = viewSlice.actions;
+export const { setViewMode, setFocusBlock } = viewSlice.actions;
 
 export default viewSlice.reducer;

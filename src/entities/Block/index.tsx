@@ -1,7 +1,7 @@
 import { BlockComponent, BlockStateProps, BlockDispatchProps } from './BlockComponent';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { BlockId, makeGetBlockRecord } from './blocksSlice';
+import { BlockId, makeGetBlockRecord, updateBlock } from './blocksSlice';
 import { PageId } from '../Page/pagesSlice';
 import { isBlockSelected, setFocusBlock } from '../ViewState/viewSlice';
 import { RootState } from  '../../app/store';
@@ -29,7 +29,8 @@ const mapStateToProps = (state: RootState, ownProps: Props): BlockStateProps => 
 };
 
 const mapDispatchToProps = (dispatch: Dispatch, ownProps: Props): BlockDispatchProps => ({
-    setSelected: () => { alert(ownProps.id); dispatch(setFocusBlock(ownProps.id)) }
+    setSelected: () => { dispatch(setFocusBlock(ownProps.id)) },
+    update: (value: string) => { dispatch(updateBlock(ownProps.id, value)) }
 })
 
 const connector = connect(mapStateToProps, mapDispatchToProps);

@@ -41,6 +41,21 @@ export const blocksSlice = createSlice({
     name: 'blocks',
     initialState,
     reducers: {
+        updateBlock: {
+            reducer: (state, action: PayloadAction<BlockRecord>) => {
+                if (!!state.byId[action.payload.id]) {
+                    state.byId[action.payload.id].content = action.payload.content
+                }
+            },
+            prepare: (blockId: BlockId, value: string) => {
+                return {
+                    payload: {
+                        id: blockId,
+                        content: value
+                    } as BlockRecord
+                }
+            }
+        },
         addBlock: {
             reducer: (state, action: PayloadAction<BlockRecord>) => {
                 let newBlock = action.payload;
@@ -53,15 +68,15 @@ export const blocksSlice = createSlice({
                 return {
                     payload: {
                         id: nanoid(),
-                        content: ""
+                        content: ''
                     } as BlockRecord
                 }
             },
         }
-    },
+    }
 });
 
-export const { addBlock } = blocksSlice.actions;
+export const { addBlock, updateBlock } = blocksSlice.actions;
 
 const getBlockRecord = (state: RootState, id: string) => state.blocks.byId[id];
 
