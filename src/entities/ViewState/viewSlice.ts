@@ -14,7 +14,7 @@ type ViewMode = {
 
 export type BrowseView = ViewMode & {
     mode: Mode.Browse
-    focusBlockId?: BlockId
+    focusBlockPath?: BlockId[]
     time: number
 };
 
@@ -37,13 +37,13 @@ export function isSerializeView(state: ViewState): state is SerializeView {
     return state.mode === Mode.Serialize;
 }
 
-export const isBlockSelected = createSelector((state: RootState, blockId: BlockId): boolean => (
-    isBrowseView(state.view) && state.view.focusBlockId === blockId), x => x);
+export const isBlockSelected = createSelector((state: RootState, path: BlockId[]): boolean => (
+    isBrowseView(state.view) && state.view.focusBlockPath === path), x => x);
 
 
 const initialState = {
     mode: Mode.Browse,
-    focusBlockId: undefined,
+    focusBlockPath: undefined,
     time: Date.now()
 } as ViewState;
 
@@ -61,7 +61,7 @@ export const viewSlice = createSlice({
                     return {
                         payload: {
                             mode: Mode.Browse,
-                            focusBlockId: undefined,
+                            focusBlockPath: undefined,
                             time: Date.now()
                         }
                     }
@@ -81,11 +81,11 @@ export const viewSlice = createSlice({
                     return action.payload
                 }
             },
-            prepare: (blockId: BlockId | undefined) => {
+            prepare: (path: BlockId[] | undefined) => {
                 return {
                     payload: {
                         mode: Mode.Browse,
-                        focusBlockId: blockId,
+                        focusBlockPath: path,
                         time: Date.now()
                     }
                 }

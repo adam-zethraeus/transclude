@@ -16,7 +16,7 @@ const mapStateToProps = (state: RootState, ownProps: Props): BlockStateProps => 
     let getBlockRecord = makeGetBlockRecord();
     let record = getBlockRecord(state, ownProps.id);
     let cycle = ownProps.path.includes(record.id);
-    let isSelected = isBlockSelected(state, ownProps.id)
+    let isSelected = isBlockSelected(state, ownProps.path)
     return {
         id: record.id,
         pageId: ownProps.pageId,
@@ -29,7 +29,7 @@ const mapStateToProps = (state: RootState, ownProps: Props): BlockStateProps => 
 };
 
 const mapDispatchToProps = (dispatch: Dispatch, ownProps: Props): BlockDispatchProps => ({
-    setSelected: () => { dispatch(setFocusBlock(ownProps.id)) },
+    setSelected: () => { dispatch(setFocusBlock(ownProps.path)) },
     update: (value: string) => { dispatch(updateBlock(ownProps.id, value)) }
 })
 
