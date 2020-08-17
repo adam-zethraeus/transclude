@@ -1,5 +1,3 @@
-import React from 'react';
-
 const remarkiframeopts = {
     'www.youtube.com': {
         tag: 'iframe',
@@ -29,16 +27,6 @@ type IFrameProps = {
             width: number
         }
     }
-}
-
-
-// this would usually be generated wtih:
-// const stringify = require('rehype-stringify')
-// const remark2rehype = require('remark-rehype')
-const IFrame: React.FC<IFrameProps> = (props) => {
-    console.log(props);
-    return (<iframe title="youtube video" src={props.data.hProperties.src} height={props.data.hProperties.height} width={props.data.hProperties.width} />);
-}
+};
 
 export const IFrameOpts = remarkiframeopts;
-export const IFrameRenderer = IFrame;
