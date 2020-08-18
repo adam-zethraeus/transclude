@@ -15,13 +15,13 @@ const processor = unified()
   .use(rehype2react, {createElement: React.createElement})
 
 type MarkdownProps = {
-	children: string[];
+	children: string;
 };
 
 const Markdown: React.FC<MarkdownProps> = (props) => {
     return (
         <div className="markdown">
-            { processor.processSync(props.children.join("")).result as React.ReactElement }
+            { processor.processSync(props.children).result as React.ReactElement }
         </div>
     );
 };
