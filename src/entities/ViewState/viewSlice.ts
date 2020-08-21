@@ -1,6 +1,8 @@
-import { createSlice, PayloadAction, createSelector } from '@reduxjs/toolkit';
+import { createSlice, createSelector } from '@reduxjs/toolkit';
 import { BlockId } from '../Block/blocksSlice';
 import { RootState } from  '../../app/store';
+import setViewModeReducer from './reducers/setViewMode'
+import setFocusBlockReducer from './reducers/setFocusBlock'
 
 // TODO: If we're modeling this explicitly like this it should probably replace connected-react-router.
 export enum Mode {
@@ -51,47 +53,9 @@ export const viewSlice = createSlice({
   name: 'view',
   initialState,
   reducers: {
-    setViewMode: {
-      reducer: (state: ViewState, action: PayloadAction<ViewState>) => {
-        return action.payload
-      },
-      prepare: (mode: Mode) => {
-        switch (mode) {
-          case Mode.Browse:
-          return {
-            payload: {
-              mode: Mode.Browse,
-              focusBlockPath: undefined,
-              time: Date.now()
-            }
-          }
-          case Mode.Serialize:
-          return {
-            payload: {
-              mode: Mode.Serialize,
-              time: Date.now()
-            }
-          }
-        }
-      },
-    },
-    setFocusBlock: {
-      reducer: (state: ViewState, action: PayloadAction<ViewState>) => {
-        if (state.mode === Mode.Browse) {
-          return action.payload
-        }
-      },
-      prepare: (path: BlockId[] | undefined) => {
-        return {
-          payload: {
-            mode: Mode.Browse,
-            focusBlockPath: path,
-            time: Date.now()
-          }
-        }
-      },
-    },
-  },
+    setViewMode: setViewModeReducer,
+    setFocusBlock: setFocusBlockReducer
+  }
 });
 
 export const { setViewMode, setFocusBlock } = viewSlice.actions;
