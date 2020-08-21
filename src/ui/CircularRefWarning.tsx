@@ -5,12 +5,12 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import { Link } from 'react-router-dom'
 
-type CircularReferenceBlockIndicatorProps = {
+type CircularRefWarningProps = {
   id: BlockId;
   pageId: PageId;
 }
 
-const CircularReferenceBlockIndicator: React.FC<CircularReferenceBlockIndicatorProps> = (props) => {
+const CircularRefWarning: React.FC<CircularRefWarningProps> = (props) => {
   return (
     <OverlayTrigger
     placement="bottom"
@@ -23,4 +23,4 @@ const CircularReferenceBlockIndicator: React.FC<CircularReferenceBlockIndicatorP
   );
 };
 
-export default CircularReferenceBlockIndicator;
+export default CircularRefWarning;

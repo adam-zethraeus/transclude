@@ -2,7 +2,7 @@ import React from 'react';
 import { BlockContent, BlockId } from './blocksSlice';
 import { PageId } from '../Page/pagesSlice';
 import Block from './';
-import CircularReferenceBlockIndicator from '../../ui/CircularReferenceBlockIndicator';
+import CircularRefWarning from '../../ui/CircularRefWarning';
 import Form from 'react-bootstrap/Form';
 import Markdown from '../../markdown';
 
@@ -27,7 +27,7 @@ export const BlockComponent: React.FC<BlockComponentProps> = (props) => {
   return (
     <>
     { props.isCycleRepresentation &&
-      <CircularReferenceBlockIndicator id={props.id} pageId={props.pageId} />
+      <CircularRefWarning id={props.id} pageId={props.pageId} />
     }
     { !props.isCycleRepresentation &&
       <div className="block" onClick={(event) => { props.setSelected(); event.stopPropagation();}}>
