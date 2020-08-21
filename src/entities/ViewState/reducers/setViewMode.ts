@@ -11,15 +11,13 @@ export default {
       return {
         payload: {
           mode: Mode.Browse,
-          focusBlockPath: undefined,
-          time: Date.now()
+          focusBlockPath: undefined
         }
       }
       case Mode.Serialize:
       return {
         payload: {
-          mode: Mode.Serialize,
-          time: Date.now()
+          mode: Mode.Serialize
         }
       }
     }

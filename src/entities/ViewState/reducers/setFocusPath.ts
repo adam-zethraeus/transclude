@@ -1,6 +1,5 @@
 import { PayloadAction } from '@reduxjs/toolkit'
-import { ViewState, Mode } from '../viewSlice'
-import { BlockId } from '../../Block/blocksSlice'
+import { ViewState, Mode, BlockPath } from '../viewSlice'
 
 export default {
   reducer: (state: ViewState, action: PayloadAction<ViewState>) => {
@@ -8,12 +7,11 @@ export default {
       return action.payload
     }
   },
-  prepare: (path: BlockId[] | undefined) => {
+  prepare: (path?: BlockPath) => {
     return {
       payload: {
         mode: Mode.Browse,
-        focusBlockPath: path,
-        time: Date.now()
+        focusPath: path
       }
     }
   },

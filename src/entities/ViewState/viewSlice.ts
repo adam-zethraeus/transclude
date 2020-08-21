@@ -1,8 +1,9 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
 import { BlockId } from '../Block/blocksSlice';
+import { PageId } from '../Page/pagesSlice';
 import { RootState } from  '../../app/store';
 import setViewModeReducer from './reducers/setViewMode'
-import setFocusBlockReducer from './reducers/setFocusBlock'
+import setFocusPathReducer from './reducers/setFocusPath'
 
 // TODO: If we're modeling this explicitly like this it should probably replace connected-react-router.
 export enum Mode {
@@ -16,14 +17,12 @@ type ViewMode = {
 
 export type BrowseView = ViewMode & {
   mode: Mode.Browse
-  focusBlockPath?: BlockId[]
-  time: number
-};
+  focusPath?: BlockPath
+}
 
 export type SerializeView = ViewMode & {
   mode: Mode.Serialize
-  time: number
-};
+}
 
 export type ViewState = ViewMode & (BrowseView | SerializeView);
 
@@ -39,14 +38,46 @@ export function isSerializeView(state: ViewState): state is SerializeView {
   return state.mode === Mode.Serialize;
 }
 
-export const isBlockSelected = createSelector((state: RootState, path: BlockId[]): boolean => (
-  isBrowseView(state.view) && state.view.focusBlockPath === path), x => x);
+export const isBlockSelected = createSelector((state: RootState, path: BlockPath): boolean => 
+  (isBrowseView(state.view) && state.view.focusPath === path), x => x);
 
+export const createBlockPath = 
+  (pageId: PageId, blockId: BlockId, intermediateBlockIds: BlockId[] = []): BlockPath => 
+    new BlockPathImpl(pageId, blockId, intermediateBlockIds);
+
+export interface BlockPath {
+  readonly pageId: PageId
+  readonly blockId: BlockId
+  readonly intermediateBlockIds: BlockId[]
+  extendedToChild(blockId: BlockId): BlockPath
+  containsCycle(): boolean
+}
+
+class BlockPathImpl implements BlockPath {
+  readonly pageId: PageId
+  readonly blockId: BlockId
+  readonly intermediateBlockIds: BlockId[]
+
+  constructor (pageId: PageId, blockId: BlockId, intermediateBlockIds: BlockId[] = []) {
+    this.pageId = pageId
+    this.blockId = blockId
+    this.intermediateBlockIds = intermediateBlockIds
+  }
+
+  extendedToChild(blockId: BlockId): BlockPath {
+    return new BlockPathImpl(this.pageId, blockId, this.intermediateBlockIds.concat(this.blockId))
+  }
+
+  containsCycle(): boolean {
+    let pathBlockIdSet = new Set(this.intermediateBlockIds);
+    pathBlockIdSet.add(this.blockId);
+    return pathBlockIdSet.size !== this.intermediateBlockIds.length + 1;
+  }
+}
 
 const initialState = {
   mode: Mode.Browse,
-  focusBlockPath: undefined,
-  time: Date.now()
+  blockPath: undefined
 } as ViewState;
 
 export const viewSlice = createSlice({
@@ -54,10 +85,10 @@ export const viewSlice = createSlice({
   initialState,
   reducers: {
     setViewMode: setViewModeReducer,
-    setFocusBlock: setFocusBlockReducer
+    setFocusPath: setFocusPathReducer
   }
 });
 
-export const { setViewMode, setFocusBlock } = viewSlice.actions;
+export const { setViewMode, setFocusPath } = viewSlice.actions;
 
 export default viewSlice.reducer;

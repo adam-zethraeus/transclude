@@ -10,13 +10,13 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import LinkButton from './ui/LinkButton';
-import { setFocusBlock } from './entities/ViewState/viewSlice';
+import { setFocusPath } from './entities/ViewState/viewSlice';
 
 
 function App() {
   return (
     <ConnectedRouter history={history}>
-      <Container onClick={ (event: MouseEvent) => { store.dispatch(setFocusBlock(undefined)); } }>
+      <Container onClick={ (event: MouseEvent) => { store.dispatch(setFocusPath(undefined)); } }>
         <Row xs={12} id="header">
           <Col xs={3}>
             <img src="/T.png" alt="" id="T" />

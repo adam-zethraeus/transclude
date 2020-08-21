@@ -1,11 +1,12 @@
-import React from 'react';
-import { BlockId } from '../Block/blocksSlice';
-import Block from '../Block';
-import { PageId } from './pagesSlice';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Breadcrumb from 'react-bootstrap/Breadcrumb';
-import { Link } from 'react-router-dom';
+import React from 'react'
+import { BlockId } from '../Block/blocksSlice'
+import Block from '../Block'
+import { PageId } from './pagesSlice'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+import Breadcrumb from 'react-bootstrap/Breadcrumb'
+import { Link } from 'react-router-dom'
+import { createBlockPath } from '../ViewState/viewSlice'
 
 export type PageComponentProps = {
   id: PageId;
@@ -38,7 +39,7 @@ export const PageComponent: React.FC<PageComponentProps> = (props) => {
         </Row>
       </header>
       <main>
-        { props.blockIds.map(id => <Block id={id} pageId={props.id} key={id} path={[]} />) }
+        { props.blockIds.map(id => <Block id={id} pageId={props.id} key={id} path={ createBlockPath(props.id, id) } />) }
       </main>
     </>
     )

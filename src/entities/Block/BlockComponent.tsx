@@ -5,6 +5,7 @@ import Block from './';
 import CircularRefWarning from '../../ui/CircularRefWarning';
 import Form from 'react-bootstrap/Form';
 import Markdown from '../../markdown';
+import { BlockPath } from '../ViewState/viewSlice';
 
 export type BlockDispatchProps = {
   setSelected: () => void;
@@ -15,7 +16,7 @@ export type BlockStateProps = {
   id: BlockId;
   pageId: PageId;
   content: BlockContent;
-  path: BlockId[];
+  path: BlockPath;
   subBlockIds: BlockId[];
   isCycleRepresentation: boolean;
   isSelected: boolean;
@@ -50,12 +51,13 @@ export const BlockComponent: React.FC<BlockComponentProps> = (props) => {
     }
     { props.subBlockIds &&
       props.subBlockIds.map(
-        (id) => <Block
-        id={id}
-        pageId={props.pageId}
-        key={id}
-        path={props.path.concat(props.id)}
-        />
+        (id) => 
+          <Block
+            id={ id }
+            pageId={ props.pageId }
+            key={ id }
+            path={ props.path.extendedToChild(id) }
+          />
         )
     }
     </div>
