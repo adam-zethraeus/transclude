@@ -8,21 +8,21 @@ import remarkiframe from 'remark-iframes';
 import { IFrameOpts } from './iframe';
 
 const processor = unified()
-  .use(markdown)
-  .use(remark2rehype)
-  .use(remarkiframe, IFrameOpts)
-  .use(sanitize)
-  .use(rehype2react, {createElement: React.createElement})
+.use(markdown)
+.use(remark2rehype)
+.use(remarkiframe, IFrameOpts)
+.use(sanitize)
+.use(rehype2react, {createElement: React.createElement})
 
 type MarkdownProps = {
 	children: string;
 };
 
 const Markdown: React.FC<MarkdownProps> = (props) => {
-    return (
-        <div className="markdown">
-            { processor.processSync(props.children).result as React.ReactElement }
-        </div>
+  return (
+    <div className="markdown">
+    { processor.processSync(props.children).result as React.ReactElement }
+    </div>
     );
 };
 

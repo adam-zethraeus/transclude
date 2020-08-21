@@ -9,10 +9,10 @@ import state from './state';
 
 // TODO: Group all current non-router RootState into a data field.
 export type RootState = {
-    blocks: Blocks
-    pages: Pages
-    view: ViewState
-    aliases: {}
+  blocks: Blocks
+  pages: Pages
+  view: ViewState
+  aliases: {}
 };
 
 export const history = createBrowserHistory()
@@ -22,17 +22,17 @@ const preloadedState = state as RootState;
 const middleware = [...getDefaultMiddleware(), routerMiddleware(history)];
 
 const createRootReducer = (history: History) => combineReducers({
-    router: connectRouter(history),
-    pages: pagesReducer,
-    blocks: blocksReducer,
-    view: viewReducer,
+  router: connectRouter(history),
+  pages: pagesReducer,
+  blocks: blocksReducer,
+  view: viewReducer,
 });
 
 export const store = configureStore({
-    reducer: createRootReducer(history),
-    middleware,
-    devTools: process.env.NODE_ENV !== 'production',
-    preloadedState,
+  reducer: createRootReducer(history),
+  middleware,
+  devTools: process.env.NODE_ENV !== 'production',
+  preloadedState,
 });
 
 // You can use this to generate the RootState dynamically.

@@ -5,45 +5,45 @@ import { RootState } from  '../../app/store';
 import { findPathToBlock } from '../Block/blocksSlice';
 
 type Props = {
-    id: string;
-    drillDownBlockId?: string;
+  id: string;
+  drillDownBlockId?: string;
 }
 
 function isDefined<Type>(variable: Type | undefined): variable is Type {
-    return variable !== undefined;
+  return variable !== undefined;
 }
 
 const mapStateToProps = (state: RootState, ownProps: Props): PageComponentProps => {
-    let getPageRecord = makeGetPageRecord();
-    let pageRecord = getPageRecord(state, ownProps.id);
-    if (isDefined(ownProps.drillDownBlockId)) {
-        let drillDownBlockId: string = ownProps.drillDownBlockId;
-        let blockPath = pageRecord.blockIds
-            .map(id => findPathToBlock(state, id, drillDownBlockId))
-            .filter(path => path != null)
-            .pop()
+  let getPageRecord = makeGetPageRecord();
+  let pageRecord = getPageRecord(state, ownProps.id);
+  if (isDefined(ownProps.drillDownBlockId)) {
+    let drillDownBlockId: string = ownProps.drillDownBlockId;
+    let blockPath = pageRecord.blockIds
+    .map(id => findPathToBlock(state, id, drillDownBlockId))
+    .filter(path => path != null)
+    .pop()
 
-        if (!!blockPath) {
-            return {
-                id: ownProps.id,
-                title: pageRecord.title,
-                blockPath: blockPath,
-                blockIds: [drillDownBlockId]
-            };
-        } else {
-            return {
-                id: ownProps.id,
-                title: pageRecord.title,
-                blockIds: [] // TODO: factor to 404 block
-            };
-        }
-    }
-
-    return {
+    if (!!blockPath) {
+      return {
         id: ownProps.id,
         title: pageRecord.title,
-        blockIds: pageRecord.blockIds
-    };
+        blockPath: blockPath,
+        blockIds: [drillDownBlockId]
+      };
+    } else {
+      return {
+        id: ownProps.id,
+        title: pageRecord.title,
+        blockIds: [] // TODO: factor to 404 block
+      };
+    }
+  }
+
+  return {
+    id: ownProps.id,
+    title: pageRecord.title,
+    blockIds: pageRecord.blockIds
+  };
 };
 
 const Page = connect(mapStateToProps)(PageComponent);

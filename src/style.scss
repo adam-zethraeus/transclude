@@ -5,50 +5,50 @@ $font-family-base: "Georgia", "Times New Roman", Times, serif;
 @import '~bootstrap/scss/bootstrap.scss';
 
 body {
-    #root {
-        margin-top: 1.5em;
+  #root {
+    margin-top: 1.5em;
 
-        #header {
-            margin-bottom: 1em;
+    #header {
+      margin-bottom: 1em;
 
-            img#T {
-                width: 100px;
-            }
-        }
-
-        hr {
-            border-top: 3px double $gray-600;
-            border-bottom: 0;
-        }
-        header {
-            .breadcrumb {
-                    font-size: 0.8rem;
-                    margin: 0;
-                    padding: 0.2rem 0.8rem;
-                    background-color: #ebebeb;
-            }
-        }
-        main > div.block:first-child {
-            border-top: 0px;
-        }
-
-        main {
-            div.block {
-                border-top: 1px dashed #ddd;
-
-                div.block {
-                    margin-left: 1em;
-                }
-            }
-            div.block-cycle {
-                text-align: right;
-                font-size: $font-size-sm;
-                a {
-                    color: $red;
-                }
-            }
-        }
-
+      img#T {
+        width: 100px;
+      }
     }
+
+    hr {
+      border-top: 3px double $gray-600;
+      border-bottom: 0;
+    }
+    header {
+      .breadcrumb {
+        font-size: 0.8rem;
+        margin: 0;
+        padding: 0.2rem 0.8rem;
+        background-color: #ebebeb;
+      }
+    }
+    main > div.block:first-child {
+      border-top: 0px;
+    }
+
+    main {
+      div.block {
+        border-top: 1px dashed #ddd;
+
+        div.block {
+          margin-left: 1em;
+        }
+      }
+      div.block-cycle {
+        text-align: right;
+        font-size: $font-size-sm;
+        a {
+          color: $red;
+        }
+      }
+    }
+
+  }
 }
 
