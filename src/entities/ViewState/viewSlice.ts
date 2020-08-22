@@ -38,11 +38,11 @@ export function isSerializeView(state: ViewState): state is SerializeView {
   return state.mode === Mode.Serialize;
 }
 
-export const isBlockSelected = createSelector((state: RootState, path: BlockPath): boolean => 
+export const isBlockSelected = createSelector((state: RootState, path: BlockPath): boolean =>
   (isBrowseView(state.view) && state.view.focusPath === path), x => x);
 
-export const createBlockPath = 
-  (pageId: PageId, blockId: BlockId, intermediateBlockIds: BlockId[] = []): BlockPath => 
+export const createBlockPath =
+  (pageId: PageId, blockId: BlockId, intermediateBlockIds: BlockId[] = []): BlockPath =>
     new BlockPathImpl(pageId, blockId, intermediateBlockIds);
 
 export interface BlockPath {
@@ -51,6 +51,7 @@ export interface BlockPath {
   readonly intermediateBlockIds: BlockId[]
   extendedToChild(blockId: BlockId): BlockPath
   containsCycle(): boolean
+  poppedToParent(): BlockPath | undefined
 }
 
 class BlockPathImpl implements BlockPath {
@@ -73,6 +74,18 @@ class BlockPathImpl implements BlockPath {
     pathBlockIdSet.add(this.blockId);
     return pathBlockIdSet.size !== this.intermediateBlockIds.length + 1;
   }
+
+  poppedToParent(): BlockPath | undefined {
+    if (this.intermediateBlockIds.length > 0) {
+      return new BlockPathImpl(this.pageId, this.intermediateBlockIds[this.intermediateBlockIds.length - 1], this.intermediateBlockIds.slice(0, -1));
+    }
+    return undefined;
+  }
+
+  movedToSibling(siblingId: BlockId) {
+    return new BlockPathImpl(this.pageId, siblingId,this.intermediateBlockIds);
+  }
+
 }
 
 const initialState = {
