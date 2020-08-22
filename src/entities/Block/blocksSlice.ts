@@ -1,6 +1,8 @@
 import { createSlice, PayloadAction, createSelector, nanoid } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 import { assert } from '../../utils'
+import { PageId, getPageBlocks } from '../Page/pagesSlice'
+import { BlockPath, createBlockPath } from '../ViewState/viewSlice';
 
 export type BlockId = string;
 export type BlockRecord = {
@@ -11,7 +13,7 @@ export type BlockRecord = {
 export type BlockContent = string;
 export type Blocks = { allIds: BlockId[], byId: Record<string, BlockRecord> };
 
-
+// FIXME: use BlockPath
 export function findPathToBlock(state: RootState, curr: BlockId, to: BlockId, path: BlockId[] = []): BlockId[] | null {
   if (path.includes(curr)) {
     return null;
@@ -30,7 +32,23 @@ export function findPathToBlock(state: RootState, curr: BlockId, to: BlockId, pa
     }
   } 
   return null;
-} 
+}
+
+export const getBlockPathFromPage = (state: RootState, pageId: PageId, blockId: BlockId): BlockPath | undefined => {
+  const pathToBlock = (curr: BlockId, to: BlockId, path: BlockId[] = []): BlockId[] | undefined => {
+    if (curr === to) { return path }
+    return getSubBlocks(state, curr)
+      .filter(val => !!val)
+      .map(id => pathToBlock(id, to, path.concat([curr])))
+      .filter(val => !!val)
+      .pop()
+  }
+  return getPageBlocks(state, pageId)
+    .map(id => pathToBlock(id, blockId))
+    .filter(val => !!val)
+    .map(path => createBlockPath(pageId, blockId, path))
+    .pop()
+}
 
 const initialState: Blocks = {
   byId: {},
@@ -78,8 +96,8 @@ export const blocksSlice = createSlice({
 
 export const { addBlock, updateBlock } = blocksSlice.actions;
 
-const getBlockRecord = (state: RootState, id: string) => state.blocks.byId[id];
-
+const getBlockRecord = (state: RootState, id: BlockId) => state.blocks.byId[id];
+export const getSubBlocks = (state: RootState, id: BlockId) => getBlockRecord(state, id).subBlockIds;
 export const makeGetBlockRecord = () => createSelector(getBlockRecord, x => x)
 
 export default blocksSlice.reducer;

@@ -12,7 +12,6 @@ export type RootState = {
   blocks: Blocks
   pages: Pages
   view: ViewState
-  aliases: {}
 };
 
 export const history = createBrowserHistory()

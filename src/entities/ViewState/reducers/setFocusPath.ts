@@ -1,18 +1,17 @@
 import { PayloadAction } from '@reduxjs/toolkit'
-import { ViewState, Mode, BlockPath } from '../viewSlice'
+import { ViewState, BlockPath, isBrowseView } from '../viewSlice'
+
+const setFocusPathReducer = (state: ViewState, action: PayloadAction<BlockPath | undefined>) => {
+  if (isBrowseView(state)) {
+    state.focusPath = action.payload;
+  }
+}
 
 export default {
-  reducer: (state: ViewState, action: PayloadAction<ViewState>) => {
-    if (state.mode === Mode.Browse) {
-      return action.payload
-    }
-  },
+  reducer: setFocusPathReducer,
   prepare: (path?: BlockPath) => {
     return {
-      payload: {
-        mode: Mode.Browse,
-        focusPath: path
-      }
+      payload: path
     }
   },
 }
