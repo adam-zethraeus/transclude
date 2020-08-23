@@ -1,6 +1,6 @@
 import { configureStore, getDefaultMiddleware, ThunkAction, Action, combineReducers } from '@reduxjs/toolkit';
-import pagesReducer, { Pages } from '../entities/Page/pagesSlice';
-import blocksReducer, { Blocks } from '../entities/Block/blocksSlice';
+import pagesReducer, { PagesStoreDataType } from '../entities/Page/pagesSlice';
+import blocksReducer, { BlocksStoreDataType } from '../entities/Block/blocksSlice';
 import viewReducer, { ViewState } from '../entities/ViewState/viewSlice';
 import { connectRouter, routerMiddleware } from 'connected-react-router';
 import { createBrowserHistory, History } from 'history';
@@ -9,8 +9,8 @@ import state from './state';
 
 // TODO: Group all current non-router RootState into a data field.
 export type RootState = {
-  blocks: Blocks
-  pages: Pages
+  blocks: BlocksStoreDataType
+  pages: PagesStoreDataType
   view: ViewState
 };
 

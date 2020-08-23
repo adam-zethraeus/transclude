@@ -4,6 +4,7 @@ import { PageId } from '../Page/pagesSlice';
 import { RootState } from  '../../app/store';
 import setViewModeReducer from './reducers/setViewMode'
 import setFocusPathReducer from './reducers/setFocusPath'
+import offsetBlockFocusReducer from './reducers/offsetBlockFocus'
 
 // TODO: If we're modeling this explicitly like this it should probably replace connected-react-router.
 export enum Mode {
@@ -98,7 +99,8 @@ export const viewSlice = createSlice({
   initialState,
   reducers: {
     setViewMode: setViewModeReducer,
-    setFocusPath: setFocusPathReducer
+    setFocusPath: setFocusPathReducer,
+    offsetBlockFocus: offsetBlockFocusReducer
   }
 });
 

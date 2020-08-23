@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction, createSelector, nanoid } from '@reduxjs/toolkit';
-import { RootState } from '../../app/store';
 import { BlockId } from '../Block/blocksSlice';
 
 export type PageId = string;
@@ -8,9 +7,9 @@ export type PageRecord = {
   title: string,
   blockIds: BlockId[]
 };
-export type Pages = { allIds: PageId[], byId: Record<string, PageRecord> };
+export type PagesStoreDataType = { allIds: PageId[], byId: Record<string, PageRecord> };
 
-const initialState: Pages = {
+const initialState: PagesStoreDataType = {
   byId: {},
   allIds: []
 }
@@ -42,11 +41,11 @@ export const pageSlice = createSlice({
 
 export const { addPage } = pageSlice.actions;
 
-const getPageRecord = (state: RootState, id: string): PageRecord => 
-  state.pages.byId[id];
+const getPageRecord = (state: PagesStoreDataType, id: string): PageRecord =>
+  state.byId[id];
 
-export const getPageBlocks = (state: RootState, id: string): BlockId[] => 
+export const getPageBlocks = (state: PagesStoreDataType, id: string): BlockId[] =>
   getPageRecord(state, id).blockIds;
-  
+
 export const makeGetPageRecord = () => createSelector(getPageRecord, x => x)
 export default pageSlice.reducer;
