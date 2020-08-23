@@ -42,52 +42,30 @@ export function isSerializeView(state: ViewState): state is SerializeView {
 export const isBlockSelected = createSelector((state: RootState, path: BlockPath): boolean =>
   (isBrowseView(state.view) && state.view.focusPath === path), x => x);
 
+
+
+export type BlockPath = {
+  pageId: PageId
+  blockId: BlockId
+  intermediateBlockIds: BlockId[]
+}
+
 export const createBlockPath =
-  (pageId: PageId, blockId: BlockId, intermediateBlockIds: BlockId[] = []): BlockPath =>
-    new BlockPathImpl(pageId, blockId, intermediateBlockIds);
+  (pageId: PageId, blockId: BlockId, intermediateBlockIds: BlockId[] = []): BlockPath => ({
+    pageId,blockId, intermediateBlockIds
+  });
 
-export interface BlockPath {
-  readonly pageId: PageId
-  readonly blockId: BlockId
-  readonly intermediateBlockIds: BlockId[]
-  extendedToChild(blockId: BlockId): BlockPath
-  containsCycle(): boolean
-  poppedToParent(): BlockPath | undefined
-}
+export const blockPathExtendedToChild = (path: BlockPath, blockId: BlockId): BlockPath => ({
+  pageId: path.pageId,
+  blockId: blockId,
+  intermediateBlockIds: path.intermediateBlockIds.concat(path.blockId)
+});
 
-class BlockPathImpl implements BlockPath {
-  readonly pageId: PageId
-  readonly blockId: BlockId
-  readonly intermediateBlockIds: BlockId[]
-
-  constructor (pageId: PageId, blockId: BlockId, intermediateBlockIds: BlockId[] = []) {
-    this.pageId = pageId
-    this.blockId = blockId
-    this.intermediateBlockIds = intermediateBlockIds
-  }
-
-  extendedToChild(blockId: BlockId): BlockPath {
-    return new BlockPathImpl(this.pageId, blockId, this.intermediateBlockIds.concat(this.blockId))
-  }
-
-  containsCycle(): boolean {
-    let pathBlockIdSet = new Set(this.intermediateBlockIds);
-    pathBlockIdSet.add(this.blockId);
-    return pathBlockIdSet.size !== this.intermediateBlockIds.length + 1;
-  }
-
-  poppedToParent(): BlockPath | undefined {
-    if (this.intermediateBlockIds.length > 0) {
-      return new BlockPathImpl(this.pageId, this.intermediateBlockIds[this.intermediateBlockIds.length - 1], this.intermediateBlockIds.slice(0, -1));
-    }
-    return undefined;
-  }
-
-  movedToSibling(siblingId: BlockId) {
-    return new BlockPathImpl(this.pageId, siblingId,this.intermediateBlockIds);
-  }
-
-}
+export const blockPathContainsCycle = (path: BlockPath): boolean => {
+  let pathBlockIdSet = new Set(path.intermediateBlockIds);
+  pathBlockIdSet.add(path.blockId);
+  return pathBlockIdSet.size !== path.intermediateBlockIds.length + 1;
+};
 
 const initialState = {
   mode: Mode.Browse,
@@ -104,6 +82,6 @@ export const viewSlice = createSlice({
   }
 });
 
-export const { setViewMode, setFocusPath } = viewSlice.actions;
+export const { setViewMode, setFocusPath, offsetBlockFocus } = viewSlice.actions;
 
 export default viewSlice.reducer;

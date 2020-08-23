@@ -1,10 +1,12 @@
+import { AnyAction } from 'redux'
 import { BlockComponent, BlockStateProps, BlockDispatchProps } from './BlockComponent';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { BlockId, makeGetBlockRecord, updateBlock } from './blocksSlice';
 import { PageId } from '../Page/pagesSlice';
-import { isBlockSelected, setFocusPath, BlockPath } from '../ViewState/viewSlice';
-import { RootState } from  '../../app/store';
+import { isBlockSelected, setFocusPath, BlockPath, offsetBlockFocus, blockPathContainsCycle } from '../ViewState/viewSlice';
+import { RootState, AppThunk } from  '../../app/store';
+import { ThunkDispatch } from 'redux-thunk';
 
 type Props = {
   id: BlockId;
@@ -21,7 +23,7 @@ const mapStateToProps = (state: RootState, ownProps: Props): BlockStateProps => 
     content: record.content,
     path: ownProps.path,
     subBlockIds: record.subBlockIds,
-    isCycleRepresentation: ownProps.path.containsCycle(),
+    isCycleRepresentation: blockPathContainsCycle(ownProps.path),
     isSelected: isBlockSelected(state, ownProps.path),
   };
 };
@@ -29,9 +31,17 @@ const mapStateToProps = (state: RootState, ownProps: Props): BlockStateProps => 
 const mapDispatchToProps = (dispatch: Dispatch, ownProps: Props): BlockDispatchProps => {
   return {
     setSelected: () => { dispatch(setFocusPath(ownProps.path)) },
-    update: (value: string) => { dispatch(updateBlock(ownProps.id, value)) }
+    update: (value: string) => { dispatch(updateBlock(ownProps.id, value)) },
+    offsetFocus: (path: BlockPath, offset: number) => { (dispatch as ThunkDispatch<RootState, void, AnyAction>)(offsetFocusThunkDispatch(path, offset)) }
   }
 };
+
+const offsetFocusThunkDispatch = (path: BlockPath, offset: number): AppThunk =>
+  (dispatch, getState): void => {
+    let state = getState();
+    dispatch(offsetBlockFocus(path, offset, state.blocks, state.pages))
+  }
+
 
 const connector = connect(mapStateToProps, mapDispatchToProps);
 

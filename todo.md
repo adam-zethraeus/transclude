@@ -1,3 +1,4 @@
+* blocks don't redraw on the focus view information change
 * solidify block-content representation model. reconcile it with markdown.
   * there's a significant tension between blocks-from-markdown and transclusion.
   * option: if a block is split always keep acontainer super-block

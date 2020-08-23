@@ -21,7 +21,7 @@ export const PageComponent: React.FC<PageComponentProps> = (props) => {
       <header>
         <Row>
           <Col>
-            <h1>{props.title}</h1>  
+            <h1>{props.title}</h1>
           </Col>
           { !!props.blockPath && (
           <>

@@ -19,7 +19,7 @@ export default {
       "bId4": {
         id: "bId4",
         content: "## block four.\n[block four](/page/pId1/bId4). `block four`. **block four**. _block four_. \n\n1. block four.\n2. block four. \n 3. block four",
-        subBlockIds: ["bId2"]
+        subBlockIds: []
       },
       "bId5": {
         id: "bId5",
