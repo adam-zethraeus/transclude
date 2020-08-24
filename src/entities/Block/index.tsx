@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { BlockId, makeGetBlockRecord, updateBlock } from './blocksSlice';
 import { PageId } from '../Page/pagesSlice';
-import { isBlockSelected, setFocusPath, BlockPath, offsetBlockFocus, blockPathContainsCycle } from '../ViewState/viewSlice';
+import { setFocusPath, BlockPath, offsetBlockFocus, isBrowseView } from '../ViewState/viewSlice';
 import { RootState, AppThunk } from  '../../app/store';
 import { ThunkDispatch } from 'redux-thunk';
 
@@ -23,8 +23,7 @@ const mapStateToProps = (state: RootState, ownProps: Props): BlockStateProps => 
     content: record.content,
     path: ownProps.path,
     subBlockIds: record.subBlockIds,
-    isCycleRepresentation: blockPathContainsCycle(ownProps.path),
-    isSelected: isBlockSelected(state, ownProps.path),
+    isSelected: isBrowseView(state.view) ? (state.view.focusPath?.blockId === ownProps.id) : false,
   };
 };
 
@@ -43,6 +42,6 @@ const offsetFocusThunkDispatch = (path: BlockPath, offset: number): AppThunk =>
   }
 
 
-const connector = connect(mapStateToProps, mapDispatchToProps);
+const Block = connect(mapStateToProps, mapDispatchToProps);
 
-export default connector(BlockComponent);
+export default Block(BlockComponent);

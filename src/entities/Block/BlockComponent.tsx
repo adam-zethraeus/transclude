@@ -2,10 +2,9 @@ import React from 'react';
 import { BlockContent, BlockId } from './blocksSlice';
 import { PageId } from '../Page/pagesSlice';
 import Block from './';
-import CircularRefWarning from '../../ui/CircularRefWarning';
 import Form from 'react-bootstrap/Form';
 import Markdown from '../../markdown';
-import { BlockPath, blockPathExtendedToChild } from '../ViewState/viewSlice';
+import { BlockPath, blockPathExtendedToChild} from '../ViewState/viewSlice';
 
 export type BlockDispatchProps = {
   setSelected: () => void;
@@ -19,20 +18,15 @@ export type BlockStateProps = {
   content: BlockContent;
   path: BlockPath;
   subBlockIds: BlockId[];
-  isCycleRepresentation: boolean;
   isSelected: boolean;
 };
 
 export type BlockComponentProps = BlockStateProps & BlockDispatchProps
 
 export const BlockComponent: React.FC<BlockComponentProps> = (props) => {
-  console.log(props.id);
   return (
     <>
-    { props.isCycleRepresentation &&
-      <CircularRefWarning id={props.id} pageId={props.pageId} />
-    }
-    { !props.isCycleRepresentation &&
+    {
       <div className='block' onClick={(event) => { props.setSelected(); event.stopPropagation();}}>
       { !props.isSelected &&
         <Markdown>{ props.content }</Markdown>
