@@ -51,6 +51,5 @@ export default {
   },
   view:  {
     mode: "BROWSE",
-    time: 1597007917373
   }
 }
