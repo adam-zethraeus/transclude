@@ -6,10 +6,10 @@ import { Link } from 'react-router-dom';
 const getStore = (state: RootState) => state;
 
 const PageList: React.FC<{}> = () => {
-  let store = useSelector(getStore);
+  let state = useSelector(getStore);
   return (
     <ul>
-    { store.pages.allIds.map((pageId) => <li key={pageId}><Link to={`/page/${pageId}`}>{pageId}</Link></li> ) }
+    { state.data.pages.allIds.map((pageId) => <li key={pageId}><Link to={`/page/${pageId}`}>{pageId}</Link></li> ) }
     </ul>
     );
 };

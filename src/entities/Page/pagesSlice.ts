@@ -15,7 +15,7 @@ const initialState: PagesStoreDataType = {
 }
 
 export const pageSlice = createSlice({
-  name: 'pages',
+  name: 'data.pages',
   initialState,
   reducers: {
     addPage: {

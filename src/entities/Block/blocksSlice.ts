@@ -24,7 +24,7 @@ export function findPathToBlock(state: RootState, curr: BlockId, to: BlockId, pa
   if (curr === to) {
     return currPath;
   }
-  let currRecord = state.blocks.byId[curr];
+  let currRecord = state.data.blocks.byId[curr];
   assert(!!currRecord, `Invalid block: ${curr} linked via: ${path}`)
 
   for (let id of currRecord.subBlockIds) {
@@ -70,7 +70,7 @@ type AddBlockPayload = {
 }
 
 export const blocksSlice = createSlice({
-  name: 'blocks',
+  name: 'data.blocks',
   initialState,
   reducers: {
     updateBlock: {
@@ -125,7 +125,7 @@ export const blocksSlice = createSlice({
 
 export const { addBlock, updateBlock } = blocksSlice.actions;
 
-export const getBlockRecord = (state: RootState, id: BlockId) => state.blocks.byId[id];
+export const getBlockRecord = (state: RootState, id: BlockId) => state.data.blocks.byId[id];
 export const getSubBlocks = (state: BlocksStoreDataType, id: BlockId): BlockId[] => state.byId[id]?.subBlockIds;
 export const makeGetBlockRecord = () => createSelector(getBlockRecord, x => x)
 

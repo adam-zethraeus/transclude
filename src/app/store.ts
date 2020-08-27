@@ -9,8 +9,10 @@ import state from './state';
 
 // TODO: Group all current non-router RootState into a data field.
 export type RootState = {
-  blocks: BlocksStoreDataType
-  pages: PagesStoreDataType
+  data: {
+    blocks: BlocksStoreDataType
+    pages: PagesStoreDataType
+  },
   view: ViewState
 };
 
@@ -20,10 +22,15 @@ const preloadedState = state as RootState;
 
 const middleware = [...getDefaultMiddleware(), routerMiddleware(history)];
 
-const createRootReducer = (history: History) => combineReducers({
-  router: connectRouter(history),
+const dataReducer = combineReducers({
   pages: pagesReducer,
   blocks: blocksReducer,
+});
+
+// TODO: remove connected-react-router
+const createRootReducer = (history: History) => combineReducers({
+  router: connectRouter(history),
+  data: dataReducer,
   view: viewReducer,
 });
 
@@ -34,7 +41,7 @@ export const store = configureStore({
   preloadedState,
 });
 
-// You can use this to generate the RootState dynamically.
+// TODO: fix, or consider removing, the view state's union type to enable this.
 // export type RootState = ReturnType<typeof store.getState>;
 
 export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, Action<string>>;

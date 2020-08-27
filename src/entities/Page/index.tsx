@@ -15,7 +15,7 @@ function isDefined<Type>(variable: Type | undefined): variable is Type {
 
 const mapStateToProps = (state: RootState, ownProps: Props): PageComponentProps => {
   let getPageRecord = makeGetPageRecord();
-  let pageRecord = getPageRecord(state.pages, ownProps.id);
+  let pageRecord = getPageRecord(state.data.pages, ownProps.id);
   if (isDefined(ownProps.drillDownBlockId)) {
     let drillDownBlockId: string = ownProps.drillDownBlockId;
     let blockPath = pageRecord.blockIds

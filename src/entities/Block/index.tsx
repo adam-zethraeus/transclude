@@ -38,7 +38,7 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: Props): BlockDispatchP
 const offsetFocusThunkDispatch = (path: BlockPath, offset: number): AppThunk =>
   (dispatch, getState): void => {
     let state = getState();
-    dispatch(offsetBlockFocus(path, offset, state.blocks, state.pages))
+    dispatch(offsetBlockFocus(path, offset, state.data.blocks, state.data.pages))
   }
 
 
