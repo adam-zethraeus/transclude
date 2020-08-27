@@ -7,10 +7,12 @@ import { BlockPath, createBlockPath } from '../ViewState/viewSlice';
 export type BlockId = string;
 export type BlockRecord = {
   id: BlockId
-  content: BlockContent
+  content: string
   subBlockIds: BlockId[]
+  creationTime: number
+  lastModificationTime: number
 }
-export type BlockContent = string;
+
 export type BlocksStoreDataType = { allIds: BlockId[], byId: Record<string, BlockRecord> };
 
 // FIXME: use BlockPath
@@ -60,6 +62,13 @@ const initialState: BlocksStoreDataType = {
   allIds: []
 }
 
+type AddBlockPayload = {
+  owningPageId: PageId
+  parentBlockId?: BlockId
+  lastSiblingBlockId?: BlockId
+  record: BlockRecord
+}
+
 export const blocksSlice = createSlice({
   name: 'blocks',
   initialState,
@@ -80,19 +89,34 @@ export const blocksSlice = createSlice({
       }
     },
     addBlock: {
-      reducer: (state, action: PayloadAction<BlockRecord>) => {
-        let newBlock = action.payload;
+      reducer: (state, action: PayloadAction<AddBlockPayload>) => {
+        let newBlock = action.payload.record;
+        // TODO:
+        // - actually hook the block into the right place.
+        // - include enough page state in the action to verify the page actually exists.
+        // - include enough block state in the action for the page reducer to check sibling blocks.
+        // - (should actions preppers be heavy enough that they actually do this themselves?)
+        // - use the exported action to add an extraReducer to the pagesSlice.
         if (!state.byId[newBlock.id]) {
           state.byId[newBlock.id] = newBlock;
           state.allIds.push(newBlock.id);
         }
       },
-      prepare: () => {
+      prepare: (owningPageId: PageId, parentBlockId?: BlockId, lastSiblingBlockId?: BlockId, initialContent?: string) => {
+        let now = Date.now();
         return {
           payload: {
-            id: nanoid(),
-            content: ''
-          } as BlockRecord
+            owningPageId: owningPageId,
+            parentBlockId: parentBlockId,
+            lastSiblingBlockId: lastSiblingBlockId,
+            record: {
+              id: nanoid(),
+              content: initialContent ?? "",
+              creationTime: now,
+              lastModificationTime: now,
+              subBlockIds: [],
+            }
+          }
         }
       },
     }

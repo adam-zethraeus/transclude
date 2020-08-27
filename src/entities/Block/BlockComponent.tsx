@@ -1,5 +1,5 @@
 import React from 'react';
-import { BlockContent, BlockId } from './blocksSlice';
+import { BlockId } from './blocksSlice';
 import { PageId } from '../Page/pagesSlice';
 import Block from './';
 import Form from 'react-bootstrap/Form';
@@ -15,7 +15,7 @@ export type BlockDispatchProps = {
 export type BlockStateProps = {
   id: BlockId;
   pageId: PageId;
-  content: BlockContent;
+  content: string;
   path: BlockPath;
   subBlockIds: BlockId[];
   isSelected: boolean;
