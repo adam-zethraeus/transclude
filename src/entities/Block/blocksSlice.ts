@@ -70,7 +70,7 @@ type AddBlockPayload = {
 }
 
 export const blocksSlice = createSlice({
-  name: 'data.blocks',
+  name: 'blocks',
   initialState,
   reducers: {
     updateBlock: {
