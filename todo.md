@@ -6,7 +6,6 @@
 * move data definitions somewhere easier to import.
 * pick a strategy for representing url state.
   * connected-router vs. custom representation of route as a 'view' state property.
-* consider move to immutable.js
 
 ## Thunk Example:
 
