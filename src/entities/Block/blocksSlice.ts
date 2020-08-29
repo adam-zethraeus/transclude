@@ -122,6 +122,9 @@ export const blocksSlice = createSlice({
         // If there's no parentBlockId the only insertion is done in the pagesSlice.
         if (!parentBlockId) { return };
 
+        // Check validity relative to store.
+        if(!state.byId[parentBlockId]) { return };
+
         // Hook block into correct position relative to other blocks.
         let insertLocation = !!lastSiblingBlockId ? state.byId[parentBlockId].subBlockIds.indexOf(lastSiblingBlockId) + 1 : 0;
         state.byId[parentBlockId].subBlockIds.splice(insertLocation, 0, newBlock.id);

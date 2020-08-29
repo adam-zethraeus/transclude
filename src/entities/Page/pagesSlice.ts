@@ -46,6 +46,9 @@ export const pageSlice = createSlice({
       let lastSiblingBlockId = action.payload.lastSiblingBlockId;
       let newBlock = action.payload.newRecord;
 
+      // Check validitiy relative to store;
+      if (!state.byId[pageId]) { return };
+
       // If there's a parentBlockId the only insertion is done in the blocksSlice.
       if (parentBlockId) { return };
 
