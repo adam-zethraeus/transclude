@@ -6,13 +6,10 @@ import Form from 'react-bootstrap/Form';
 import Markdown from '../../markdown';
 import { BlockPath, blockPathExtendedToChild} from '../ViewState/viewSlice';
 
-export type BlockDispatchProps = {
+export type BlockComponentProps = {
   setSelected: () => void;
   update: (value: string) => void;
   offsetFocus: (path: BlockPath, offset: number) => void;
-};
-
-export type BlockStateProps = {
   id: BlockId;
   pageId: PageId;
   content: string;
@@ -20,8 +17,6 @@ export type BlockStateProps = {
   subBlockIds: BlockId[];
   isSelected: boolean;
 };
-
-export type BlockComponentProps = BlockStateProps & BlockDispatchProps
 
 export const BlockComponent: React.FC<BlockComponentProps> = (props) => {
   return (

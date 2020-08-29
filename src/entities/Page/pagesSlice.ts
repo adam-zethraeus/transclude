@@ -1,5 +1,6 @@
-import { createSlice, PayloadAction, createSelector, nanoid } from '@reduxjs/toolkit';
-import { BlockId } from '../Block/blocksSlice';
+import { createSlice, PayloadAction, createSelector, nanoid } from '@reduxjs/toolkit'
+import { BlockId } from '../Block/blocksSlice'
+import { RootState } from '../../app/store'
 
 export type PageId = string;
 export type PageRecord = {
@@ -48,4 +49,5 @@ export const getPageBlocks = (state: PagesStoreDataType, id: string): BlockId[] 
   getPageRecord(state, id).blockIds;
 
 export const makeGetPageRecord = () => createSelector(getPageRecord, x => x)
+export const getPagesStore = createSelector((state: RootState) => state.data.pages, x => x);
 export default pageSlice.reducer;

@@ -128,5 +128,6 @@ export const { addBlock, updateBlock } = blocksSlice.actions;
 export const getBlockRecord = (state: RootState, id: BlockId) => state.data.blocks.byId[id];
 export const getSubBlocks = (state: BlocksStoreDataType, id: BlockId): BlockId[] => state.byId[id]?.subBlockIds;
 export const makeGetBlockRecord = () => createSelector(getBlockRecord, x => x)
+export const getBlocksStore = createSelector((state: RootState) => state.data.blocks, x => x);
 
 export default blocksSlice.reducer;
