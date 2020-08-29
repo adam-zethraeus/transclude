@@ -1,12 +1,11 @@
 import React from 'react'
-import { BlockId } from '../Block/blocksSlice'
 import Block from '../Block'
-import { PageId } from './pagesSlice'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Breadcrumb from 'react-bootstrap/Breadcrumb'
 import { Link } from 'react-router-dom'
 import { createBlockPath } from '../ViewState/viewSlice'
+import { BlockId, BlockRecord, BlocksStoreDataType, PagesStoreDataType, PageId, BlockPath, RootState } from '../../types';
 
 export type PageComponentProps = {
   id: PageId;

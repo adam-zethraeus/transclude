@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../app/store';
 import Form from 'react-bootstrap/Form';
+import { BlockId, BlockRecord, BlocksStoreDataType, PagesStoreDataType, PageId, BlockPath, RootState } from '../../types';
 
 const getStore = (state: RootState) => state;
 

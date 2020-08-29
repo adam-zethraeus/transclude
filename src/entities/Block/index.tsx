@@ -1,10 +1,10 @@
 import { BlockComponent, BlockComponentProps} from './BlockComponent';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { BlockId, makeGetBlockRecord, updateBlock, BlocksStoreDataType, getBlocksStore } from './blocksSlice';
-import { PageId, PagesStoreDataType, getPagesStore } from '../Page/pagesSlice';
-import { setFocusPath, BlockPath, offsetBlockFocus, isBrowseView } from '../ViewState/viewSlice';
-import { RootState } from  '../../app/store';
+import { makeGetBlockRecord, updateBlock, getBlocksStore } from './blocksSlice';
+import {  getPagesStore } from '../Page/pagesSlice';
+import { setFocusPath, offsetBlockFocus, isBrowseView } from '../ViewState/viewSlice';
+import { BlockId, BlockRecord, BlocksStoreDataType, PagesStoreDataType, PageId, BlockPath, RootState } from '../../types';
 
 type Props = {
   id: BlockId

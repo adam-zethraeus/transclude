@@ -1,31 +1,8 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit';
-import { BlockId } from '../Block/blocksSlice';
-import { PageId } from '../Page/pagesSlice';
-import { RootState } from  '../../app/store';
 import setViewModeReducer from './reducers/setViewMode'
 import setFocusPathReducer from './reducers/setFocusPath'
 import offsetBlockFocusReducer from './reducers/offsetBlockFocus'
-
-// TODO: If we're modeling this explicitly like this it should probably replace connected-react-router.
-export enum Mode {
-  Browse = "BROWSE",
-  Serialize = "SERIALIZE"
-}
-
-type ViewMode = {
-  mode: Mode
-}
-
-export type BrowseView = ViewMode & {
-  mode: Mode.Browse
-  focusPath?: BlockPath
-}
-
-export type SerializeView = ViewMode & {
-  mode: Mode.Serialize
-}
-
-export type ViewState = ViewMode & (BrowseView | SerializeView);
+import { ViewState, RootState, SerializeView, BrowseView, BlockPath, BlockId, PageId, Mode } from '../../types'
 
 export function getViewState(state: RootState): ViewState {
   return state.view
@@ -41,14 +18,6 @@ export function isSerializeView(state: ViewState): state is SerializeView {
 
 export const isBlockSelected = createSelector((state: RootState, path: BlockPath): boolean =>
   (isBrowseView(state.view) && state.view.focusPath === path), x => x);
-
-
-
-export type BlockPath = {
-  pageId: PageId
-  blockId: BlockId
-  intermediateBlockIds: BlockId[]
-}
 
 export const createBlockPath =
   (pageId: PageId, blockId: BlockId, intermediateBlockIds: BlockId[] = []): BlockPath => ({

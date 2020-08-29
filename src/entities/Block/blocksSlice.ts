@@ -1,19 +1,8 @@
 import { createSlice, PayloadAction, createSelector, nanoid } from '@reduxjs/toolkit';
-import { RootState } from '../../app/store';
 import { assert } from '../../utils'
-import { PageId, getPageBlocks, PagesStoreDataType }  from '../Page/pagesSlice'
-import { BlockPath, createBlockPath } from '../ViewState/viewSlice';
-
-export type BlockId = string;
-export type BlockRecord = {
-  id: BlockId
-  content: string
-  subBlockIds: BlockId[]
-  creationTime: number
-  lastModificationTime: number
-}
-
-export type BlocksStoreDataType = { allIds: BlockId[], byId: Record<string, BlockRecord> };
+import { getPageBlocks }  from '../Page/pagesSlice'
+import { createBlockPath } from '../ViewState/viewSlice';
+import { BlockId, BlockRecord, BlocksStoreDataType, PagesStoreDataType, PageId, BlockPath, RootState } from '../../types';
 
 // FIXME: use BlockPath
 export function findPathToBlock(state: RootState, curr: BlockId, to: BlockId, path: BlockId[] = []): BlockId[] | null {

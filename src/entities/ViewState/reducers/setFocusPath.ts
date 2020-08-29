@@ -1,5 +1,6 @@
 import { PayloadAction } from '@reduxjs/toolkit'
-import { ViewState, BlockPath, isBrowseView } from '../viewSlice'
+import { isBrowseView } from '../viewSlice'
+import { ViewState, BlockPath} from '../../../types'
 
 const setFocusPathReducer = (state: ViewState, action: PayloadAction<BlockPath | undefined>) => {
   if (isBrowseView(state)) {

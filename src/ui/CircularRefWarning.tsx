@@ -1,9 +1,8 @@
 import React from 'react';
-import { BlockId } from '../entities/Block/blocksSlice';
-import { PageId } from '../entities/Page/pagesSlice';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import { Link } from 'react-router-dom'
+import { BlockId, BlockRecord, BlocksStoreDataType, PagesStoreDataType, PageId, BlockPath, RootState, ViewState } from '../types'
 
 type CircularRefWarningProps = {
   id: BlockId;

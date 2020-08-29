@@ -1,14 +1,6 @@
 import { createSlice, PayloadAction, createSelector, nanoid } from '@reduxjs/toolkit'
-import { BlockId, addBlock, AddBlockPayload, getBlockPathFromPage } from '../Block/blocksSlice'
-import { RootState } from '../../app/store'
-
-export type PageId = string;
-export type PageRecord = {
-  id: PageId,
-  title: string,
-  blockIds: BlockId[] // TODO: rename to subBlockIds, topLevelBlockIds or something that doesn't imply it contains all its decendents.
-};
-export type PagesStoreDataType = { allIds: PageId[], byId: Record<string, PageRecord> };
+import { addBlock, AddBlockPayload, getBlockPathFromPage } from '../Block/blocksSlice'
+import { RootState, PagesStoreDataType, PageRecord, BlockId } from '../../types'
 
 const initialState: PagesStoreDataType = {
   byId: {},

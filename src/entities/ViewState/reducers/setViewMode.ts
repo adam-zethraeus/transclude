@@ -1,5 +1,5 @@
 import { PayloadAction } from '@reduxjs/toolkit'
-import { ViewState, Mode } from '../viewSlice'
+import { ViewState, Mode } from '../../../types'
 
 export default {
   reducer: (state: ViewState, action: PayloadAction<ViewState>) => {

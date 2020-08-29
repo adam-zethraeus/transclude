@@ -1,10 +1,9 @@
 import React from 'react';
-import { BlockId } from './blocksSlice';
-import { PageId } from '../Page/pagesSlice';
 import Block from './';
 import Form from 'react-bootstrap/Form';
 import Markdown from '../../markdown';
-import { BlockPath, blockPathExtendedToChild} from '../ViewState/viewSlice';
+import { blockPathExtendedToChild} from '../ViewState/viewSlice';
+import { BlockId, BlockRecord, BlocksStoreDataType, PagesStoreDataType, PageId, BlockPath, RootState } from '../../types';
 
 export type BlockComponentProps = {
   setSelected: () => void;
