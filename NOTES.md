@@ -1,12 +1,3 @@
-* block creation
-* block reparenting
-* better focus navigation
-* page creation
-* refactor slices as ducks pattern.
-* move data definitions somewhere easier to import.
-* pick a strategy for representing url state.
-  * connected-router vs. custom representation of route as a 'view' state property.
-
 ## Thunk Example:
 
 ```
