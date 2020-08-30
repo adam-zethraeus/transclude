@@ -56,7 +56,13 @@ const mapStateToProps = (state: RootState, ownProps: Props): StateProps => {
 const mapDispatchToProps = (dispatch: Dispatch, ownProps: Props): DispatchProps => ({
   setSelected: () => { dispatch(setFocusPath(ownProps.path)) },
   update: (value: string) => { dispatch(updateBlock(ownProps.id, value)) },
-  offsetFocus: (path: BlockPath, offset: number, blocksState: BlocksStoreDataType, pagesState: PagesStoreDataType) => { dispatch(offsetBlockFocus(path, offset, blocksState, pagesState)) },
+  offsetFocus: (
+    path: BlockPath,
+    offset: number,
+    blocksState: BlocksStoreDataType,
+    pagesState: PagesStoreDataType) => {
+      dispatch(offsetBlockFocus(path, offset, blocksState, pagesState))
+    },
   addBlock: (
     owningPageId: PageId,
     pagesState:PagesStoreDataType,
@@ -64,8 +70,7 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: Props): DispatchProps 
     parentBlockId?: BlockId,
     lastSiblingBlockId?: BlockId,
     initialContent?: string
-  ) => dispatch(
-    addBlock(
+  ) => dispatch(addBlock(
       owningPageId,
       pagesState,
       blocksState,
@@ -90,7 +95,7 @@ const mergeProps = (stateProps: StateProps, dispatchProps: DispatchProps): Block
     owningPageId: PageId,
     parentBlockId?: BlockId,
     lastSiblingBlockId?: BlockId,
-    initialContent?: string) => {}
+    initialContent?: string) => { dispatchProps.addBlock(owningPageId, stateProps.pagesState, stateProps.blocksState, parentBlockId, lastSiblingBlockId, initialContent) }
 });
 
 const Block = connect(mapStateToProps, mapDispatchToProps, mergeProps);
