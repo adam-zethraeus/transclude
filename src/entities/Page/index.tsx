@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { PageComponent, PageComponentProps } from './PageComponent';
 import { makeGetPageRecord } from './pagesSlice';
 import { findPathToBlock } from '../Block/blocksSlice';
-import { BlockId, BlockRecord, BlocksStoreDataType, PagesStoreDataType, PageId, BlockPath, RootState } from '../../types';
+import { RootState } from '../../types';
 
 type Props = {
   id: string;

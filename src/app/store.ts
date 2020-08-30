@@ -5,7 +5,7 @@ import viewReducer from '../entities/ViewState/viewSlice';
 import { connectRouter, routerMiddleware } from 'connected-react-router';
 import { createBrowserHistory, History } from 'history';
 import state from './state';
-import { RootState, PagesStoreDataType, BlocksStoreDataType, ViewState} from '../types'
+import { RootState } from '../types'
 
 export const history = createBrowserHistory()
 
@@ -14,8 +14,8 @@ const preloadedState = state as RootState;
 const middleware = [...getDefaultMiddleware(), routerMiddleware(history)];
 
 const dataReducer = combineReducers({
-  pages: pagesReducer,
   blocks: blocksReducer,
+  pages: pagesReducer,
 });
 
 // TODO: remove connected-react-router

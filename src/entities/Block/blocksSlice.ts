@@ -98,8 +98,6 @@ export const blocksSlice = createSlice({
       reducer: (state: BlocksStoreDataType, action: PayloadAction<AddBlockPayload>) => {
         if (!action.payload.isNominallyValid) { return }
 
-        let pagesState = action.payload.pagesState;
-        let pageId = action.payload.owningPageId;
         let parentBlockId = action.payload.parentBlockId;
         let lastSiblingBlockId = action.payload.lastSiblingBlockId;
         let newBlock = action.payload.newRecord;

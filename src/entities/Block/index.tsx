@@ -4,7 +4,7 @@ import { Dispatch } from 'redux';
 import { makeGetBlockRecord, updateBlock, getBlocksStore } from './blocksSlice';
 import {  getPagesStore } from '../Page/pagesSlice';
 import { setFocusPath, offsetBlockFocus, isBrowseView } from '../ViewState/viewSlice';
-import { BlockId, BlockRecord, BlocksStoreDataType, PagesStoreDataType, PageId, BlockPath, RootState } from '../../types';
+import { BlockId, BlocksStoreDataType, PagesStoreDataType, PageId, BlockPath, RootState } from '../../types';
 
 type Props = {
   id: BlockId

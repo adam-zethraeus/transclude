@@ -3,7 +3,7 @@ import Block from './';
 import Form from 'react-bootstrap/Form';
 import Markdown from '../../markdown';
 import { blockPathExtendedToChild} from '../ViewState/viewSlice';
-import { BlockId, BlockRecord, BlocksStoreDataType, PagesStoreDataType, PageId, BlockPath, RootState } from '../../types';
+import { BlockId, PageId, BlockPath } from '../../types';
 
 export type BlockComponentProps = {
   setSelected: () => void;

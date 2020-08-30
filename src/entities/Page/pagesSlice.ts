@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction, createSelector, nanoid } from '@reduxjs/toolkit'
-import { addBlock, AddBlockPayload, getBlockPathFromPage } from '../Block/blocksSlice'
+import { addBlock, AddBlockPayload } from '../Block/blocksSlice'
 import { RootState, PagesStoreDataType, PageRecord, BlockId } from '../../types'
 
 const initialState: PagesStoreDataType = {
@@ -32,7 +32,6 @@ export const pageSlice = createSlice({
     builder.addCase(addBlock, (state: PagesStoreDataType, action: PayloadAction<AddBlockPayload>) => {
       if (!action.payload.isNominallyValid) { return };
 
-      let blocksState = action.payload.blocksState;
       let pageId = action.payload.owningPageId;
       let parentBlockId = action.payload.parentBlockId;
       let lastSiblingBlockId = action.payload.lastSiblingBlockId;
