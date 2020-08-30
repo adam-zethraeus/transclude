@@ -1,7 +1,6 @@
 * page creation.
 * page title editing.
 * block reparenting.
-* add cursor focus to in-focus blocks.
 * hook up async acts to allow for action chaining. probably observables.
 * use async chaining to focus on blocks when created.
 * keyboard navigation to focus blocks should place cursor intuitively.

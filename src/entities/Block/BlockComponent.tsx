@@ -32,36 +32,37 @@ export const BlockComponent: React.FC<BlockComponentProps> = (props) => {
       }
       { props.isSelected &&
         <Form.Control
-        as='textarea'
-        rows={(props.content.match(/\n/g)?.length ?? 0) + 1}
-        value={props.content}
-        onChange={ (event) => { props.update(event.target.value) }}
-        onKeyDown={ (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-          let target = e.target as HTMLTextAreaElement;
-          if (target.selectionStart !== target.selectionEnd) { return }
-          switch (e.keyCode) {
-            case 40:// down
-              if (target.selectionStart === target.textLength) {
-                props.offsetFocus(props.path, 1);
-                e.preventDefault();
-              }
-              break;
-            case 38: // up
-              if (target.selectionStart === 0) {
-                props.offsetFocus(props.path, -1);
-                e.preventDefault();
-              }
-              break;
-          }
-        }}
-        onKeyPress={ (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-          if( e.key === 'Enter' ) {
-            e.preventDefault();
-            let parent = props.path.intermediateBlockIds[props.path.intermediateBlockIds.length - 1];
-            props.addBlock(parent, props.id);
+          as='textarea'
+          ref={ (element: HTMLTextAreaElement) => { element?.focus() }}
+          rows={(props.content.match(/\n/g)?.length ?? 0) + 1}
+          value={props.content}
+          onChange={ (event) => { props.update(event.target.value) }}
+          onKeyDown={ (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+            let target = e.target as HTMLTextAreaElement;
+            if (target.selectionStart !== target.selectionEnd) { return }
+            switch (e.keyCode) {
+              case 40: // down
+                if (target.selectionStart === target.textLength) {
+                  props.offsetFocus(props.path, 1);
+                  e.preventDefault();
+                }
+                break;
+              case 38: // up
+                if (target.selectionStart === 0) {
+                  props.offsetFocus(props.path, -1);
+                  e.preventDefault();
+                }
+                break;
+            }
+          }}
+          onKeyPress={ (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+            if( e.key === 'Enter' ) {
+              e.preventDefault();
+              let parent = props.path.intermediateBlockIds[props.path.intermediateBlockIds.length - 1];
+              props.addBlock(parent, props.id);
+            }
           }
         }
-      }
       />
     }
     { props.subBlockIds &&
