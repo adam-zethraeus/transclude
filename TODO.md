@@ -1,6 +1,7 @@
 * page creation.
 * page title editing.
 * block reparenting.
+* fetch inital state from the network.
 * hook up async acts to allow for action chaining. probably observables.
 * use async chaining to focus on blocks when created.
 * keyboard navigation to focus blocks should place cursor intuitively.
