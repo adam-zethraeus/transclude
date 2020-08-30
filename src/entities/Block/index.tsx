@@ -1,7 +1,7 @@
 import { BlockComponent, BlockComponentProps} from './BlockComponent';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { updateBlock } from './blocksSlice';
+import { updateBlock, addBlock } from './blocksSlice';
 import {  getPagesStore } from '../Page/pagesSlice';
 import { setFocusPath, offsetBlockFocus, isBrowseView } from '../ViewState/viewSlice';
 import { BlockId, BlocksStoreDataType, PagesStoreDataType, PageId, BlockPath, RootState } from '../../types';
@@ -28,6 +28,14 @@ type DispatchProps = {
   setSelected: () => void
   update: (value: string) => void
   offsetFocus: (path: BlockPath, offset: number, blocksState: BlocksStoreDataType, pagesState: PagesStoreDataType) => void
+  addBlock: (
+    owningPageId: PageId,
+    pagesState:PagesStoreDataType,
+    blocksState: BlocksStoreDataType,
+    parentBlockId?: BlockId,
+    lastSiblingBlockId?: BlockId,
+    initialContent?: string)
+  => void
 }
 
 const mapStateToProps = (state: RootState, ownProps: Props): StateProps => {
@@ -49,6 +57,23 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: Props): DispatchProps 
   setSelected: () => { dispatch(setFocusPath(ownProps.path)) },
   update: (value: string) => { dispatch(updateBlock(ownProps.id, value)) },
   offsetFocus: (path: BlockPath, offset: number, blocksState: BlocksStoreDataType, pagesState: PagesStoreDataType) => { dispatch(offsetBlockFocus(path, offset, blocksState, pagesState)) },
+  addBlock: (
+    owningPageId: PageId,
+    pagesState:PagesStoreDataType,
+    blocksState: BlocksStoreDataType,
+    parentBlockId?: BlockId,
+    lastSiblingBlockId?: BlockId,
+    initialContent?: string
+  ) => dispatch(
+    addBlock(
+      owningPageId,
+      pagesState,
+      blocksState,
+      parentBlockId,
+      lastSiblingBlockId,
+      initialContent
+    )
+  ),
 });
 
 const mergeProps = (stateProps: StateProps, dispatchProps: DispatchProps): BlockComponentProps => ({
@@ -60,7 +85,12 @@ const mergeProps = (stateProps: StateProps, dispatchProps: DispatchProps): Block
   isSelected: stateProps.isSelected,
   setSelected: dispatchProps.setSelected,
   update: dispatchProps.update,
-  offsetFocus: (path: BlockPath, offset: number) => { dispatchProps.offsetFocus(path, offset, stateProps.blocksState, stateProps.pagesState) }
+  offsetFocus: (path: BlockPath, offset: number) => { dispatchProps.offsetFocus(path, offset, stateProps.blocksState, stateProps.pagesState) },
+  addBlock: (
+    owningPageId: PageId,
+    parentBlockId?: BlockId,
+    lastSiblingBlockId?: BlockId,
+    initialContent?: string) => {}
 });
 
 const Block = connect(mapStateToProps, mapDispatchToProps, mergeProps);

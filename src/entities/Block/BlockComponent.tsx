@@ -9,6 +9,12 @@ export type BlockComponentProps = {
   setSelected: () => void;
   update: (value: string) => void;
   offsetFocus: (path: BlockPath, offset: number) => void;
+  addBlock: (
+    owningPageId: PageId,
+    parentBlockId?: BlockId,
+    lastSiblingBlockId?: BlockId,
+    initialContent?: string)
+  => void
   id: BlockId;
   pageId: PageId;
   content: string;
