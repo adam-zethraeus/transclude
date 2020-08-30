@@ -92,10 +92,9 @@ const mergeProps = (stateProps: StateProps, dispatchProps: DispatchProps): Block
   update: dispatchProps.update,
   offsetFocus: (path: BlockPath, offset: number) => { dispatchProps.offsetFocus(path, offset, stateProps.blocksState, stateProps.pagesState) },
   addBlock: (
-    owningPageId: PageId,
     parentBlockId?: BlockId,
     lastSiblingBlockId?: BlockId,
-    initialContent?: string) => { dispatchProps.addBlock(owningPageId, stateProps.pagesState, stateProps.blocksState, parentBlockId, lastSiblingBlockId, initialContent) }
+    initialContent?: string) => { dispatchProps.addBlock(stateProps.pageId, stateProps.pagesState, stateProps.blocksState, parentBlockId, lastSiblingBlockId, initialContent) }
 });
 
 const Block = connect(mapStateToProps, mapDispatchToProps, mergeProps);

@@ -10,7 +10,6 @@ export type BlockComponentProps = {
   update: (value: string) => void;
   offsetFocus: (path: BlockPath, offset: number) => void;
   addBlock: (
-    owningPageId: PageId,
     parentBlockId?: BlockId,
     lastSiblingBlockId?: BlockId,
     initialContent?: string)
@@ -58,6 +57,8 @@ export const BlockComponent: React.FC<BlockComponentProps> = (props) => {
         onKeyPress={ (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
           if( e.key === 'Enter' ) {
             e.preventDefault();
+            let parent = props.path.intermediateBlockIds[props.path.intermediateBlockIds.length - 1];
+            props.addBlock(parent, props.id);
           }
         }
       }
