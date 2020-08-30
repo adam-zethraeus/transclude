@@ -1,8 +1,8 @@
 import { PayloadAction } from '@reduxjs/toolkit'
 import { isBrowseView } from '../viewSlice'
-import { getSubBlocks, getBlockPathFromPage } from '../../Block/blocksSlice'
-import { getPageBlocks } from '../../Page/pagesSlice'
+import { getBlockPathFromPage } from '../../Block/blocksSlice'
 import { BlockId, BlocksStoreDataType, PagesStoreDataType, BlockPath, ViewState } from '../../../types';
+import { getSubBlocks, getPageBlocks } from '../../../selectors'
 
 type Payload = {
     path: BlockPath

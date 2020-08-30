@@ -1,8 +1,8 @@
-import { createSlice, PayloadAction, createSelector, nanoid } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, nanoid } from '@reduxjs/toolkit'
 import { assert } from '../../utils'
-import { getPageBlocks }  from '../Page/pagesSlice'
-import { createBlockPath } from '../ViewState/viewSlice';
-import { BlockId, BlockRecord, BlocksStoreDataType, PagesStoreDataType, PageId, BlockPath, RootState } from '../../types';
+import { createBlockPath } from '../ViewState/viewSlice'
+import { BlockId, BlockRecord, BlocksStoreDataType, PagesStoreDataType, PageId, BlockPath, RootState } from '../../types'
+import { getPageBlocks, getSubBlocks } from '../../selectors'
 
 // FIXME: use BlockPath
 export function findPathToBlock(state: RootState, curr: BlockId, to: BlockId, path: BlockId[] = []): BlockId[] | null {
@@ -151,10 +151,5 @@ export const blocksSlice = createSlice({
 });
 
 export const { addBlock, updateBlock } = blocksSlice.actions;
-
-export const getBlockRecord = (state: RootState, id: BlockId) => state.data.blocks.byId[id];
-export const getSubBlocks = (state: BlocksStoreDataType, id: BlockId): BlockId[] => state.byId[id]?.subBlockIds;
-export const makeGetBlockRecord = () => createSelector(getBlockRecord, x => x)
-export const getBlocksStore = createSelector((state: RootState) => state.data.blocks, x => x);
 
 export default blocksSlice.reducer;
