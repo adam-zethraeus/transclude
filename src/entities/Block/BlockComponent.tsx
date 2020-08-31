@@ -9,11 +9,9 @@ export type BlockComponentProps = {
   setSelected: () => void;
   update: (value: string) => void;
   offsetFocus: (path: BlockPath, offset: number) => void;
-  addBlock: (
-    parentBlockId?: BlockId,
-    lastSiblingBlockId?: BlockId,
-    initialContent?: string)
-  => void
+  addBlock: ()=> void;
+  indent: () => void;
+  outdent: () => void;
   id: BlockId;
   pageId: PageId;
   content: string;
@@ -53,6 +51,14 @@ export const BlockComponent: React.FC<BlockComponentProps> = (props) => {
                   e.preventDefault();
                 }
                 break;
+            }
+            if (e.key === 'Tab') {
+              if (e.shiftKey) {
+                props.outdent();
+              } else {
+                props.indent();
+              }
+              e.preventDefault();
             }
           }}
           onKeyPress={ (e: React.KeyboardEvent<HTMLTextAreaElement>) => {

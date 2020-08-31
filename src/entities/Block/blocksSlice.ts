@@ -59,6 +59,13 @@ export type AddBlockPayload = {
   focusPath?: BlockPath
 }
 
+export type IndentPayload = {
+  focusPath: BlockPath
+  pagesState: PagesStoreDataType
+  blocksState: BlocksStoreDataType
+  lastModificationTime: number
+}
+
 export const blocksSlice = createSlice({
   name: 'blocks',
   initialState,
@@ -75,6 +82,24 @@ export const blocksSlice = createSlice({
             id: blockId,
             content: value
           } as BlockRecord
+        }
+      }
+    },
+    indentBlock: {
+      reducer: (state: BlocksStoreDataType, action: PayloadAction<IndentPayload>) => {
+      },
+      prepare: (focusPath: BlockPath, pagesState:PagesStoreDataType, blocksState: BlocksStoreDataType) => {
+        return {
+          payload: { focusPath, pagesState, blocksState, lastModificationTime: Date.now()}
+        }
+      }
+    },
+    outdentBlock: {
+      reducer: (state: BlocksStoreDataType, action: PayloadAction<IndentPayload>) => {
+      },
+      prepare: (focusPath: BlockPath, pagesState:PagesStoreDataType, blocksState: BlocksStoreDataType) => {
+        return {
+          payload: { focusPath, pagesState, blocksState, lastModificationTime: Date.now()}
         }
       }
     },
@@ -139,6 +164,6 @@ export const blocksSlice = createSlice({
   }
 });
 
-export const { addBlock, updateBlock } = blocksSlice.actions;
+export const { addBlock, updateBlock, indentBlock, outdentBlock } = blocksSlice.actions;
 
 export default blocksSlice.reducer;

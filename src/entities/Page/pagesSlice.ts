@@ -1,6 +1,6 @@
 import { assert, assertFail } from '../../utils'
 import { createSlice, PayloadAction, createSelector, nanoid } from '@reduxjs/toolkit'
-import { addBlock, AddBlockPayload } from '../Block/blocksSlice'
+import { addBlock, AddBlockPayload, indentBlock, outdentBlock, IndentPayload } from '../Block/blocksSlice'
 import { RootState, PagesStoreDataType, PageRecord, BlockId } from '../../types'
 
 const initialState: PagesStoreDataType = {
@@ -53,6 +53,12 @@ export const pageSlice = createSlice({
         assert(focusIndex >= 0, 'Inconsistency: child not found in direct parent page');
         state.byId[pageId].blockIds.splice(focusIndex + 1, 0, newBlock.id);
       }
+    })
+    .addCase(indentBlock, (state: PagesStoreDataType, action: PayloadAction<IndentPayload>) => {
+
+    })
+    .addCase(outdentBlock, (state: PagesStoreDataType, action: PayloadAction<IndentPayload>) => {
+
     })
 });
 

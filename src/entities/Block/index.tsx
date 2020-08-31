@@ -1,8 +1,8 @@
 import { BlockComponent, BlockComponentProps} from './BlockComponent';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { updateBlock, addBlock } from './blocksSlice';
-import {  getPagesStore } from '../Page/pagesSlice';
+import { updateBlock, addBlock, indentBlock, outdentBlock } from './blocksSlice';
+import { getPagesStore } from '../Page/pagesSlice';
 import { setFocusPath, offsetBlockFocus, isBrowseView } from '../ViewState/viewSlice';
 import { BlockId, BlocksStoreDataType, PagesStoreDataType, PageId, BlockPath, RootState } from '../../types';
 import { makeGetBlockRecord, getBlocksStore } from '../../selectors'
@@ -34,7 +34,9 @@ type DispatchProps = {
     blocksState: BlocksStoreDataType,
     focusPath?: BlockPath,
     initialContent?: string)
-  => void
+  => void,
+  indentBlock: (focusPath: BlockPath, pagesState: PagesStoreDataType, blocksState: BlocksStoreDataType) => void
+  outdentBlock: (focusPath: BlockPath, pagesState: PagesStoreDataType, blocksState: BlocksStoreDataType) => void
 }
 
 const mapStateToProps = (state: RootState, ownProps: Props): StateProps => {
@@ -76,6 +78,16 @@ const mapDispatchToProps = (dispatch: Dispatch, ownProps: Props): DispatchProps 
       initialContent
     )
   ),
+  indentBlock: (
+    focusPath: BlockPath,
+    pagesState: PagesStoreDataType,
+    blocksState: BlocksStoreDataType
+  ) => dispatch(indentBlock(focusPath, pagesState, blocksState)),
+  outdentBlock: (
+    focusPath: BlockPath,
+    pagesState: PagesStoreDataType,
+    blocksState: BlocksStoreDataType
+  ) => dispatch(outdentBlock(focusPath, pagesState, blocksState)),
 });
 
 const mergeProps = (stateProps: StateProps, dispatchProps: DispatchProps): BlockComponentProps => ({
@@ -88,7 +100,9 @@ const mergeProps = (stateProps: StateProps, dispatchProps: DispatchProps): Block
   setSelected: dispatchProps.setSelected,
   update: dispatchProps.update,
   offsetFocus: (path: BlockPath, offset: number) => { dispatchProps.offsetFocus(path, offset, stateProps.blocksState, stateProps.pagesState) },
-  addBlock: () => { dispatchProps.addBlock(stateProps.pageId, stateProps.pagesState, stateProps.blocksState, stateProps.path, undefined) }
+  addBlock: () => { dispatchProps.addBlock(stateProps.pageId, stateProps.pagesState, stateProps.blocksState, stateProps.path, undefined) },
+  indent: () => { dispatchProps.indentBlock(stateProps.path, stateProps.pagesState, stateProps.blocksState) },
+  outdent: () => { dispatchProps.outdentBlock(stateProps.path, stateProps.pagesState, stateProps.blocksState) },
 });
 
 const Block = connect(mapStateToProps, mapDispatchToProps, mergeProps);
