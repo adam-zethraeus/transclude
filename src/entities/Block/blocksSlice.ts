@@ -94,11 +94,14 @@ export const blocksSlice = createSlice({
           if (!parent) { assertFail('Inconsistency: parent of focus block not found in store.') };
           let focusIndex = parent.subBlockIds.indexOf(blockId);
           assert(focusIndex >= 0, 'Inconsistency: child not found in parent\'s subBlocks.');
+
           // If first in parent, we can't indent.
           if (focusIndex === 0) { return };
           let newParentId = state.byId[parentBlockId].subBlockIds[focusIndex - 1];
+
           // Remove from parent.
           state.byId[parentBlockId].subBlockIds.splice(focusIndex, 1);
+
           // We can always insert last.
           state.byId[newParentId].subBlockIds.push(blockId);
         } else {
@@ -108,11 +111,13 @@ export const blocksSlice = createSlice({
           if (!parent) { assertFail('Inconsistency: parent page of focus block without intermediate not found in reducer\'s copy of pages state.') };
           let focusIndex = parent.blockIds.indexOf(blockId);
           assert(focusIndex >= 0, 'Inconsistency: child not found in parent page\'s subBlocks.');
+
           // If first in parent, we can't indent.
           if (focusIndex === 0) { return };
-          let newParentId = action.payload.pagesState.byId[parentPageId].blockIds[focusIndex - 1];
+
           // We must rely on pagesSlice to remove the original reference from parent page.
           // We can always insert last.
+          let newParentId = action.payload.pagesState.byId[parentPageId].blockIds[focusIndex - 1];
           state.byId[newParentId].subBlockIds.push(blockId);
         }
       },
@@ -142,17 +147,15 @@ export const blocksSlice = createSlice({
 
         // If there's no selected block the only remaining insertion is done in the pagesSlice.
         if (!focusPath) { return };
-
         let focusBlock = state.byId[focusPath.blockId];
-
         if (!focusBlock) { assertFail('Inconsistency: focus block not found in store.') };
 
         // Hook block into correct position relative to other blocks.
-
-        // If focusBlock has children, add the new block as first child...
         if (focusBlock.subBlockIds.length > 0) {
+          // FocusBlock has children, add the new block as first child.
           state.byId[focusBlock.id].subBlockIds.splice(0, 0, newBlock.id);
-        } else { // ...else selected has no children so add as the next sibling to it.
+        } else {
+          // FocusBlock has no children so add as the next sibling to it.
           // If the focus block has no block parents, the pagesSlice will do the remaining insertion.
           if (focusPath.intermediateBlockIds.length === 0) { return };
           let parentBlockId = focusPath.intermediateBlockIds[focusPath.intermediateBlockIds.length - 1];
