@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction, nanoid } from '@reduxjs/toolkit'
-import { assert } from '../../utils'
+import { assert, assertFail } from '../../utils'
 import { createBlockPath } from '../ViewState/viewSlice'
 import { BlockId, BlockRecord, BlocksStoreDataType, PagesStoreDataType, PageId, BlockPath, RootState } from '../../types'
 import { getPageBlocks, getSubBlocks } from '../../selectors'
@@ -52,27 +52,11 @@ const initialState: BlocksStoreDataType = {
 }
 
 export type AddBlockPayload = {
-  isNominallyValid: boolean
   owningPageId: PageId
-  parentBlockId?: BlockId
-  lastSiblingBlockId?: BlockId
   pagesState: PagesStoreDataType
   blocksState: BlocksStoreDataType
   newRecord: BlockRecord
-}
-
-function isAddBlockPayloadInternallyConsistent(
-  blocksState: BlocksStoreDataType,
-  pagesState: PagesStoreDataType,
-  owningPageId: PageId,
-  newRecord: BlockRecord,
-  parentBlockId?: BlockId,
-  lastSiblingBlockId?: BlockId): boolean {
-  if (!pagesState.byId[owningPageId]) { return false };
-  if (!!parentBlockId && (!blocksState.byId[parentBlockId] || !getBlockPathFromPage(blocksState, pagesState, owningPageId, parentBlockId))) { return false };
-  if (!!lastSiblingBlockId && !getBlockPathFromPage(blocksState, pagesState, owningPageId, lastSiblingBlockId)) { return false };
-  if (!!blocksState.byId[newRecord.id]) { return false };
-  return true;
+  focusPath?: BlockPath
 }
 
 export const blocksSlice = createSlice({
@@ -96,34 +80,41 @@ export const blocksSlice = createSlice({
     },
     addBlock: {
       reducer: (state: BlocksStoreDataType, action: PayloadAction<AddBlockPayload>) => {
-        if (!action.payload.isNominallyValid) { return }
-
-        let parentBlockId = action.payload.parentBlockId;
-        let lastSiblingBlockId = action.payload.lastSiblingBlockId;
         let newBlock = action.payload.newRecord;
+        let focusPath = action.payload.focusPath;
 
         // Save block
         state.byId[newBlock.id] = newBlock;
         state.allIds.push(newBlock.id);
 
-        // If there's no parentBlockId the only insertion is done in the pagesSlice.
-        if (!parentBlockId) { return };
+        // If there's no selected block the only remaining insertion is done in the pagesSlice.
+        if (!focusPath) { return };
 
-        // Check validity relative to store.
-        if(!state.byId[parentBlockId]) { return };
+        let focusBlock = state.byId[focusPath.blockId];
+
+        if (!focusBlock) { assertFail('Inconsistency: focus block not found in store.') };
 
         // Hook block into correct position relative to other blocks.
-        let insertLocation = !!lastSiblingBlockId ? state.byId[parentBlockId].subBlockIds.indexOf(lastSiblingBlockId) + 1 : 0;
-        state.byId[parentBlockId].subBlockIds.splice(insertLocation, 0, newBlock.id);
 
-
+        // If focusBlock has children, add the new block as first child...
+        if (focusBlock.subBlockIds.length > 0) {
+          state.byId[focusBlock.id].subBlockIds.splice(0, 0, newBlock.id);
+        } else { // ...else selected has no children so add as the next sibling to it.
+          // If the focus block has no block parents, the pagesSlice will do the remaining insertion.
+          if (focusPath.intermediateBlockIds.length === 0) { return };
+          let parentBlockId = focusPath.intermediateBlockIds[focusPath.intermediateBlockIds.length - 1];
+          let parentBlock = state.byId[parentBlockId];
+          if (!parentBlock) { assertFail('Inconsistency: parent of focus block not found in store.') };
+          let focusIndex = parentBlock.subBlockIds.indexOf(focusBlock.id);
+          assert(focusIndex >= 0, 'Inconsistency: child not found in parent\'s subBlocks');
+          state.byId[parentBlockId].subBlockIds.splice(focusIndex + 1, 0, newBlock.id);
+        }
       },
       prepare: (
         owningPageId: PageId,
         pagesState:PagesStoreDataType,
         blocksState: BlocksStoreDataType,
-        parentBlockId?: BlockId,
-        lastSiblingBlockId?: BlockId,
+        focusPath?: BlockPath,
         initialContent?: string,
       ) => {
         let now = Date.now();
@@ -136,13 +127,11 @@ export const blocksSlice = createSlice({
         }
         return {
           payload: {
-            isNominallyValid: isAddBlockPayloadInternallyConsistent(blocksState, pagesState, owningPageId, record, parentBlockId, lastSiblingBlockId),
             owningPageId: owningPageId,
-            parentBlockId: parentBlockId,
-            lastSiblingBlockId: lastSiblingBlockId,
             pagesState: pagesState,
             blocksState: blocksState,
             newRecord: record,
+            focusPath: focusPath,
           }
         }
       },

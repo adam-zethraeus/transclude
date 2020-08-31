@@ -1,3 +1,4 @@
+import { assert, assertFail } from '../../utils'
 import { createSlice, PayloadAction, createSelector, nanoid } from '@reduxjs/toolkit'
 import { addBlock, AddBlockPayload } from '../Block/blocksSlice'
 import { RootState, PagesStoreDataType, PageRecord, BlockId } from '../../types'
@@ -30,22 +31,28 @@ export const pageSlice = createSlice({
   },
   extraReducers: builder =>
     builder.addCase(addBlock, (state: PagesStoreDataType, action: PayloadAction<AddBlockPayload>) => {
-      if (!action.payload.isNominallyValid) { return };
-
       let pageId = action.payload.owningPageId;
-      let parentBlockId = action.payload.parentBlockId;
-      let lastSiblingBlockId = action.payload.lastSiblingBlockId;
       let newBlock = action.payload.newRecord;
+      let focusPath = action.payload.focusPath;
 
       // Check validitiy relative to store;
       if (!state.byId[pageId]) { return };
 
       // If there's a parentBlockId the only insertion is done in the blocksSlice.
-      if (parentBlockId) { return };
+      if (!focusPath) {
+        state.byId[pageId].blockIds.splice(0, 0, newBlock.id);
+      } else if (focusPath.intermediateBlockIds.length === 0) {
+        let focusBlock = action.payload.blocksState.byId[focusPath.blockId];
+        if (!focusBlock) { assertFail('Inconsistency: focus block not found in store.') };
+        // If the block in focus has children, blocksSlice will handle insertion.
+        if (focusBlock.subBlockIds.length > 0) { return };
 
-      // Hook block into correct position relative to other blocks.
-      let insertLocation = !!lastSiblingBlockId ? state.byId[pageId].blockIds.indexOf(lastSiblingBlockId) + 1 : 0;
-      state.byId[pageId].blockIds.splice(insertLocation, 0, newBlock.id);
+        let page = state.byId[pageId];
+        if (!page) { assertFail('Inconsistency: parent of focus block not found in store.') };
+        let focusIndex = page.blockIds.indexOf(focusPath.blockId);
+        assert(focusIndex >= 0, 'Inconsistency: child not found in direct parent page');
+        state.byId[pageId].blockIds.splice(focusIndex + 1, 0, newBlock.id);
+      }
     })
 });
 

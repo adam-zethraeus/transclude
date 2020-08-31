@@ -1,19 +1,23 @@
 class AssertionFailure {
-  message: String;
+  message: string;
 
-  constructor(message?: String) {
+  constructor(message?: string) {
     this.message = message ?? ""
   }
 }
 
-export function assert(predicate: boolean, message?: String) {
+export function assertFail(message?: string) {
+  throw new AssertionFailure(message);
+}
+
+export function assert(predicate: boolean, message?: string) {
   if (process.env.NODE_ENV === 'production') { return }
     if (!predicate) {
       throw new AssertionFailure(message);
     }
   };
 
-  export function assertPredicate(predicate: () => boolean, message?: String) {
+  export function assertPredicate(predicate: () => boolean, message?: string) {
     assert(predicate(), message);
   };
 
