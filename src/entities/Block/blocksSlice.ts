@@ -87,6 +87,34 @@ export const blocksSlice = createSlice({
     },
     indentBlock: {
       reducer: (state: BlocksStoreDataType, action: PayloadAction<IndentPayload>) => {
+        let blockId = action.payload.focusPath.blockId;
+        if (action.payload.focusPath.intermediateBlockIds.length > 0) {
+          let parentBlockId = action.payload.focusPath.intermediateBlockIds[action.payload.focusPath.intermediateBlockIds.length - 1]
+          let parent = state.byId[parentBlockId];
+          if (!parent) { assertFail('Inconsistency: parent of focus block not found in store.') };
+          let focusIndex = parent.subBlockIds.indexOf(blockId);
+          assert(focusIndex >= 0, 'Inconsistency: child not found in parent\'s subBlocks.');
+          // If first in parent, we can't indent.
+          if (focusIndex === 0) { return };
+          let newParentId = state.byId[parentBlockId].subBlockIds[focusIndex - 1];
+          // Remove from parent.
+          state.byId[parentBlockId].subBlockIds.splice(focusIndex, 1);
+          // We can always insert last.
+          state.byId[newParentId].subBlockIds.push(blockId);
+        } else {
+          // Parent is a page.
+          let parentPageId = action.payload.focusPath.pageId;
+          let parent = action.payload.pagesState.byId[parentPageId];
+          if (!parent) { assertFail('Inconsistency: parent page of focus block without intermediate not found in reducer\'s copy of pages state.') };
+          let focusIndex = parent.blockIds.indexOf(blockId);
+          assert(focusIndex >= 0, 'Inconsistency: child not found in parent page\'s subBlocks.');
+          // If first in parent, we can't indent.
+          if (focusIndex === 0) { return };
+          let newParentId = action.payload.pagesState.byId[parentPageId].blockIds[focusIndex - 1];
+          // We must rely on pagesSlice to remove the original reference from parent page.
+          // We can always insert last.
+          state.byId[newParentId].subBlockIds.push(blockId);
+        }
       },
       prepare: (focusPath: BlockPath, pagesState:PagesStoreDataType, blocksState: BlocksStoreDataType) => {
         return {
@@ -131,7 +159,7 @@ export const blocksSlice = createSlice({
           let parentBlock = state.byId[parentBlockId];
           if (!parentBlock) { assertFail('Inconsistency: parent of focus block not found in store.') };
           let focusIndex = parentBlock.subBlockIds.indexOf(focusBlock.id);
-          assert(focusIndex >= 0, 'Inconsistency: child not found in parent\'s subBlocks');
+          assert(focusIndex >= 0, 'Inconsistency: child not found in parent\'s subBlocks.');
           state.byId[parentBlockId].subBlockIds.splice(focusIndex + 1, 0, newBlock.id);
         }
       },

@@ -55,7 +55,19 @@ export const pageSlice = createSlice({
       }
     })
     .addCase(indentBlock, (state: PagesStoreDataType, action: PayloadAction<IndentPayload>) => {
-
+        // If there are intermediateBlockIds in the path, the direct parent is a block and blocksSlice owns.
+        if (action.payload.focusPath.intermediateBlockIds.length === 0) {
+          let blockId = action.payload.focusPath.blockId;
+          let pageId = action.payload.focusPath.pageId;
+          let page = state.byId[pageId];
+          if (!page) { assertFail('Inconsistency: page parent of focus block not found in store.') };
+          let focusIndex = page.blockIds.indexOf(blockId);
+          assert(focusIndex >= 0, 'Inconsistency: child not found in parent\'s subBlocks.');
+          // If first in parent, we can't indent.
+          if (focusIndex === 0) { return };
+          // Remove the child. blocksSlice will reparent.
+          state.byId[pageId].blockIds.splice(focusIndex, 1);
+        }
     })
     .addCase(outdentBlock, (state: PagesStoreDataType, action: PayloadAction<IndentPayload>) => {
 
